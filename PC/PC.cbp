@@ -37,9 +37,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src/2D/Point.h" />
+		<Unit filename="src/2D/PointAffichable.cpp" />
+		<Unit filename="src/2D/PointAffichable.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
-			<code_completion />
+			<code_completion>
+				<search_path add="/home/romain/Programmes/APROB/PC/src" />
+			</code_completion>
 			<debugger />
 		</Extensions>
 	</Project>
