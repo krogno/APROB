@@ -15,5 +15,6 @@
 #Fichiers binaires
 bin/
 
-#Fichier genere par Code::blocks pour se rappeler quels fichiers étaient ouverts lors de la derniere fermeture
+#Fichiers generes par Code::blocks
 *.layout
+*.depend
