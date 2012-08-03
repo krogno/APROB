@@ -1,0 +1,2 @@
+#Certains utilisant Windows, dautres Linux, etc, les caracteres de fin de chaine ne sont pas les memes. On laisse a git le soin de s'en charger.
+text=auto
