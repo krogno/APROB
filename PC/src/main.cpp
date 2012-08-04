@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    Carte2D carte("ressources/terrain2012.png", 93,123,123.0d/500, 123.0d/500);
+    Carte2D carte("ressources/terrain2012.png", 93,123,123.0/500, 123.0/500);
     carte.MettreAJour();
 
     sf::Image imageCroix;
