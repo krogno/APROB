@@ -20,19 +20,26 @@ int main()
     Objet point;
     point.x=0;
     point.y=0;
-    EntiteeGraphique entitee(&point, spriteCroix);
-    carte.AjouterEntitee(&entitee);
+    carte.AjouterObjet(&point, &spriteCroix);
+    carte.MettreAJour();
+
+    char a;
+    cout << "Entrer un caractere pour continuer" << endl;
+    cin>>a;
 
     Objet point2;
     point.x=100;
     point.y=10;
-    EntiteeGraphique entitee2(&point2, spriteCroix);
-    carte.AjouterEntitee(&entitee2);
-
+    carte.AjouterObjet(&point2, &spriteCroix);
     carte.MettreAJour();
 
     cout << "Entrer un caractere pour continuer" << endl;
-    char a;
+    cin>>a;
+
+    carte.RetirerObjet(&point);
+    carte.MettreAJour();
+
+    cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 
     return 0;
