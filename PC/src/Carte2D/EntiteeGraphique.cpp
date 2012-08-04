@@ -1,7 +1,7 @@
 #include "EntiteeGraphique.h"
 
 EntiteeGraphique::EntiteeGraphique(Objet* obj, sf::Sprite& sprit):
-sprite(sprit)
+    sprite(sprit)
 {
     objet = obj;
 }

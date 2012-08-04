@@ -6,7 +6,7 @@ Un objet est un point présentant une orientation.
 */
 class Objet
 {
-    public:
+public:
     ///Position et rotation de l'objet (en radian)
     double x, y, theta;
 };

@@ -1,2 +1,12 @@
 #Certains utilisant Windows, dautres Linux, etc, les caracteres de fin de chaine ne sont pas les memes. On laisse a git le soin de s'en charger.
-text=auto
+* text=auto
+
+# Déclaration explicite de quels fichiers sont du texte (pour que git gère les fins de ligne) et de quels fichiers sont binaires et ne devraient pas être modifiés
+*.c text
+*.h text
+*.hpp text
+*.cpp text
+
+*.png binary
+*.jpg binary
+*.tga binary
