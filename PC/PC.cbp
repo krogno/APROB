@@ -25,14 +25,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="src/2D/Point.h" />
-		<Unit filename="src/2D/PointAffichable.cpp" />
-		<Unit filename="src/2D/PointAffichable.h" />
+		<Unit filename="src/2D/Objet.h" />
+		<Unit filename="src/Carte2D/Carte2D.cpp" />
+		<Unit filename="src/Carte2D/Carte2D.h" />
+		<Unit filename="src/Carte2D/EntiteeGraphique.cpp" />
+		<Unit filename="src/Carte2D/EntiteeGraphique.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
-			<code_completion>
-				<search_path add="/home/romain/Programmes/APROB/PC/src" />
-			</code_completion>
+			<code_completion />
 			<debugger />
 		</Extensions>
 	</Project>
