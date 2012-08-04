@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     Carte2D carte("ressources/terrain2012.png", 93,123,123.0/500, 123.0/500);
-    carte.MettreAJour();
+    carte.Launch();
 
     sf::Image imageCroix;
     if (!imageCroix.LoadFromFile("ressources/croix.tga"))
@@ -21,7 +21,6 @@ int main()
     point.x=0;
     point.y=0;
     carte.AjouterObjet(&point, &spriteCroix);
-    carte.MettreAJour();
 
     char a;
     cout << "Entrer un caractere pour continuer" << endl;
@@ -31,13 +30,11 @@ int main()
     point.x=100;
     point.y=10;
     carte.AjouterObjet(&point2, &spriteCroix);
-    carte.MettreAJour();
 
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 
     carte.RetirerObjet(&point);
-    carte.MettreAJour();
 
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;

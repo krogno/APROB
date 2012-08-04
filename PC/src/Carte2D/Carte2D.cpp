@@ -3,6 +3,9 @@
 
 Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY)
 {
+    //Fixation d'une valeur par défaut de la période de rafraichissement si la mise à jour automatique est active
+    periodeRafraichissement=0.1;
+
     //Chargement  du fond de carte
     imageFond.LoadFromFile(nomFichierFond);
 
@@ -27,18 +30,28 @@ Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, d
     MettreAJour();
 }
 
+Carte2D::~Carte2D()
+{
+    Stop();
+}
+
 void Carte2D::AjouterObjet(Objet* objet, sf::Sprite* sprite)
 {
+    sf::Lock lock(mutex);
     objets.insert(std::pair<Objet*, sf::Sprite*>(objet, sprite));
 }
 
 void Carte2D::RetirerObjet(Objet *objet)
 {
+    sf::Lock lock(mutex);
     objets.erase(objet);
 }
 
 void Carte2D::MettreAJour()
 {
+    ///Verouille la modification de la liste d'objets
+    sf::Lock lock(mutex);
+
     //Dessin du fond
     fenetre.Draw(spriteFond);
 
@@ -54,3 +67,31 @@ void Carte2D::MettreAJour()
     //Affichage
     fenetre.Display();
 }
+
+bool Carte2D::SetPeriodeRafraichissement(float p)
+{
+    if(p>0)
+    {
+        periodeRafraichissement = p;
+        return true;
+    }
+    return false;
+}
+
+
+void Carte2D::Run()
+{
+    rafraichissementAutomatique = true;
+    while(rafraichissementAutomatique)
+    {
+        MettreAJour();
+        sf::Sleep(periodeRafraichissement);
+    }
+}
+
+void Carte2D::Stop()
+{
+    rafraichissementAutomatique = false;
+    Wait();
+}
+
