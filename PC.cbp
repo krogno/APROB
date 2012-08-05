@@ -24,6 +24,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DSFML_DYNAMIC" />
 			<Add directory="src" />
 		</Compiler>
 		<Unit filename="src/2D/Objet.h" />
