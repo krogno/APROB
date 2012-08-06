@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Carte2D/Carte2D.h"
-#include "2D/Mobile.h"
+#include "Deplacement/RobotUnicycleVirtuel.h"
 
 using namespace std;
 
@@ -34,28 +34,19 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     char a;
-    Mobile bete;
-    carte.AjouterObjet(&bete, &spriteBete);
+    RobotUnicycleVirtuel fauxRobot(5,5,10,0.1);
+    fauxRobot.Launch();
+    carte.AjouterObjet(&fauxRobot, &spriteBete);
 
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
-    //Avance d'un metre
-    bete.Deplacer(1000, 0);
+
+    fauxRobot.SetVitessesAngulairesRoues(10,10);
 
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
-    //Tourne de -90°
-    bete.Deplacer(0, -M_PI/2);
 
-    cout << "Entrer un caractere pour continuer" << endl;
-    cin>>a;
-    //Avance d'un mètre
-    bete.Deplacer(1000, 0);
-
-    cout << "Entrer un caractere pour continuer" << endl;
-    cin>>a;
-    //Juste pour test : tourne de -45°, recule d'un metre et tourne de -45°
-    bete.Deplacer(-1000, -M_PI/2);
+    fauxRobot.SetVitessesAngulairesRoues(-3,3);
 
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;

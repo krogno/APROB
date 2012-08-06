@@ -32,6 +32,10 @@
 		<Unit filename="src/2D/Objet.h" />
 		<Unit filename="src/Carte2D/Carte2D.cpp" />
 		<Unit filename="src/Carte2D/Carte2D.h" />
+		<Unit filename="src/Deplacement/RobotUnicycle.cpp" />
+		<Unit filename="src/Deplacement/RobotUnicycle.h" />
+		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
+		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion>
