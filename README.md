@@ -1,26 +1,29 @@
-Contient le code source utilisé sur le PC embarqué dans les robots de l'Atelier Piston ROBotique, le club de robotique des élèves de l'École Centrale de Lyon.
+Contient les codes sources développés pour les robots de l'Atelier Piston ROBotique, le club de robotique des élèves de l'École Centrale de Lyon.
 Pour plus d'informations, visitez notre site www.aprob.eclair.ec-lyon.fr.
 
-Langage
--------------
+Descriptif des répertoires
+============================
+### PC : contient le code utilisable sur le PC embarqué
+
+PC
+===========
+### Langage
 C++
 projet permettant la compilation sous CodeBlocks.
 
-Bibliothèques utilisées :
---------------
+### Bibliothèques utilisées :
 SFML 1.6 (sfml-dev.org)
-________________________________
 
 Comment compiler le code et exécuter le programme :
-===============
+-----------------
 
-Sous Ubuntu (testé sur la version 12.04)
---------
+
+### Sous Ubuntu (testé sur la version 12.04)
 
 Installer les paquets codeblocks et libsfml-dev. Le projet devrait compiler correctement sous CodeBlocks.
 
-Sous Windows (testé sur Windows XP)
---------
+### Sous Windows (testé sur Windows XP)
+
 comme d'habitude, c'est galère, et encore SFML est une bibliothèque facile à installer.
 
 - Télécharger depuis le site officiel (http://www.codeblocks.org/downloads/binaries) et installer CodeBlocks.
