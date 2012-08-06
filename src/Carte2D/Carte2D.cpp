@@ -1,5 +1,6 @@
 #include "Carte2D.h"
 #include <iostream>
+#include <cmath>
 
 Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY)
 {
@@ -49,6 +50,8 @@ void Carte2D::RetirerObjet(Objet *objet)
 
 void Carte2D::MettreAJour()
 {
+    static const double RadiansToDegres=180.0/M_PI;
+
     ///Verouille la modification de la liste d'objets
     sf::Lock lock(mutex);
 
@@ -61,7 +64,7 @@ void Carte2D::MettreAJour()
         Objet* objet = it->first;
         sf::Sprite* sprite = it->second;
         sprite->SetPosition(objet->x, objet->y);
-        sprite->SetRotation(objet->theta);
+        sprite->SetRotation(objet->theta*RadiansToDegres);
         fenetre.Draw(*sprite);
     }
     //Affichage
