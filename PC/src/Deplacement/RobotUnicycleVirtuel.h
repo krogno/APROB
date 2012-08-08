@@ -9,9 +9,9 @@ Cette classe implémente un robot unicycle virtuel, d'inertie nulle et d'asservi
 class RobotUnicycleVirtuel : public RobotUnicycle
 {
 public:
-    RobotUnicycleVirtuel(double rayonG, double rayonD, double dist, float periode);
-    void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite);
+    RobotUnicycleVirtuel();
 protected:
+    void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite);
     void GetDeplacement(double& delta_avance, double& delta_theta);
     double vitesseGauche;
     double vitesseDroite;

@@ -1,7 +1,7 @@
 #include "RobotUnicycleVirtuel.h"
+#include "Constantes.h"
 
-RobotUnicycleVirtuel::RobotUnicycleVirtuel(double rayonG, double rayonD, double dist, float periode):
-    RobotUnicycle(rayonG, rayonD, dist, periode) //Initialise les parametres hérités de RobotUnicycle
+RobotUnicycleVirtuel::RobotUnicycleVirtuel()
 {
     vitesseDroite=0;
     vitesseGauche=0;
@@ -9,7 +9,6 @@ RobotUnicycleVirtuel::RobotUnicycleVirtuel(double rayonG, double rayonD, double 
 
 void RobotUnicycleVirtuel::SetVitessesAngulairesRoues(double vG, double vD)
 {
-    sf::Lock lock(mutexMotificationConsignes);
     vitesseGauche=vG;
     vitesseDroite=vD;
 }
@@ -18,8 +17,8 @@ void RobotUnicycleVirtuel::GetDeplacement(double& delta_avance, double& delta_th
 {
     static  sf::Clock horloge;
     float tempsEcoule=horloge.GetElapsedTime();
-    delta_avance=(rayonGauche*vitesseGauche+rayonDroite*vitesseDroite)/2*tempsEcoule;
-    delta_theta=(rayonDroite*vitesseDroite-rayonGauche*vitesseGauche)/distance*tempsEcoule;
+    delta_avance=(ROBOT_UNICYCLE_RAYON_GAUCHE*vitesseGauche+ROBOT_UNICYCLE_RAYON_DROITE*vitesseDroite)/2*tempsEcoule;
+    delta_theta=(ROBOT_UNICYCLE_RAYON_DROITE*vitesseDroite-ROBOT_UNICYCLE_RAYON_GAUCHE*vitesseGauche)/ROBOT_UNICYCLE_DISTANCE_ROUES*tempsEcoule;
     horloge.Reset();
 }
 

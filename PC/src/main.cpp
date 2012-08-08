@@ -34,22 +34,15 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     char a;
-    RobotUnicycleVirtuel fauxRobot(5,5,10,0.1);
+    RobotUnicycleVirtuel fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
+    fauxRobot.Avancer(1000);
+    fauxRobot.Stopper();
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 
-    fauxRobot.SetVitessesAngulairesRoues(10,10);
-
-    cout << "Entrer un caractere pour continuer" << endl;
-    cin>>a;
-
-    fauxRobot.SetVitessesAngulairesRoues(-3,3);
-
-    cout << "Entrer un caractere pour continuer" << endl;
-    cin>>a;
 
     return 0;
 }
