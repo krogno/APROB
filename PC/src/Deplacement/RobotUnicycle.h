@@ -18,7 +18,7 @@ On suppose ici que :
 - les roues sont placées symétriquement par rapport au point défini par l'Objet.
 
 Note : cette classe est une classe abstraite, elle ne sert qu'à donner un squelette de classe sur lequel de "vrais" classes instanciables peuvent s'appuyer.
-Les méthodes SetVitessesAngulairesRoues et GetDeplacement doivent être redéfinies
+Les méthodes SetVitessesAngulairesRoues, GetDeplacement, SetMoteursEnModeRouesLibres doivent être redéfinies.
 */
 class RobotUnicycle :  public Mobile, public sf::Thread
 {
@@ -33,6 +33,7 @@ public:
     ~RobotUnicycle();
     void Avancer(double distance);
     void Stopper();
+    void PasserEnModeRouesLibres();
 
 protected:
         ///Consigne que le robot est en train d'exécuter
@@ -54,6 +55,7 @@ protected:
         ///Recevoir le déplacement du robot depuis le dernier appel de cette fonction, à surcharger
         //Ici comme une fonction ne peut renvoyer qu'une valeur, les arguments de la fonction sont modifiés directement.
         virtual void GetDeplacement(double& delta_avance, double& delta_theta)=0;
+        virtual void SetMoteursEnModeRouesLibres()=0;
 };
 
 

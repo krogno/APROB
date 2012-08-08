@@ -13,6 +13,7 @@ public:
 protected:
     void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite);
     void GetDeplacement(double& delta_avance, double& delta_theta);
+    void SetMoteursEnModeRouesLibres();
     double vitesseGauche;
     double vitesseDroite;
 };

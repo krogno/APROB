@@ -27,6 +27,13 @@ void RobotUnicycle::Stopper()
     SetVitessesAngulairesRoues(0,0);
 }
 
+void RobotUnicycle::PasserEnModeRouesLibres()
+{
+    sf::Lock lock(mutexMotificationConsignes);
+    consigne=ROUE_LIBRE;
+    SetMoteursEnModeRouesLibres();
+}
+
 void RobotUnicycle::Run()
 {
     isThreadRunning=true;
@@ -65,6 +72,7 @@ void RobotUnicycle::Run()
                     }
                     break;
                 case ROUE_LIBRE:
+                    SetMoteursEnModeRouesLibres();
                     break;
             }
         }

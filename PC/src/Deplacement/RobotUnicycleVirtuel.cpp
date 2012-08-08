@@ -13,6 +13,14 @@ void RobotUnicycleVirtuel::SetVitessesAngulairesRoues(double vG, double vD)
     vitesseDroite=vD;
 }
 
+void RobotUnicycleVirtuel::SetMoteursEnModeRouesLibres()
+{
+    /*
+    Puisqu'il s'agit d'un robot sans inertie, le robot est censé pouvoir partir en vrille lorsqu'il est laissé en roues libre
+    ici on se contente de ne rien faire
+    */
+}
+
 void RobotUnicycleVirtuel::GetDeplacement(double& delta_avance, double& delta_theta)
 {
     static  sf::Clock horloge;

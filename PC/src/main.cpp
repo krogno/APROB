@@ -39,7 +39,8 @@ int main()
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
     fauxRobot.Avancer(1000);
-    fauxRobot.Stopper();
+    sf::Sleep(0.1);
+    fauxRobot.PasserEnModeRouesLibres();
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 
