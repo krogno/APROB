@@ -12,7 +12,7 @@ public:
     RobotUnicycleVirtuel(double rayonG, double rayonD, double dist, float periode);
     void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite);
 protected:
-    void Run();
+    void GetDeplacement(double& delta_avance, double& delta_theta);
     double vitesseGauche;
     double vitesseDroite;
 };
