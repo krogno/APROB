@@ -8,7 +8,7 @@
 ///Consigne que peut suivre le robot
 enum Consigne
 {
-  AVANCER, STOP, ROUE_LIBRE
+  AVANCER, TOURNER, STOP, ROUE_LIBRE
 };
 
 /**
@@ -23,22 +23,19 @@ Les méthodes SetVitessesAngulairesRoues, GetDeplacement, SetMoteursEnModeRouesL
 class RobotUnicycle :  public Mobile, public sf::Thread
 {
 public:
-    /**
-        Instancier un nouveau robot
-        rayonG, rayonD : rayon des roues mesurant la distance
-        dist : distance entre les deux roues mesurant la distance
-        periode : période d'asservissement (s)
-    */
     RobotUnicycle();
     ~RobotUnicycle();
     void Avancer(double distance);
+    void Tourner(double angle);
     void Stopper();
     void PasserEnModeRouesLibres();
+    bool isArrete();
 
 protected:
         ///Consigne que le robot est en train d'exécuter
         Consigne consigne;
         double distanceRestanteAAvancer; //A un sens seulement si la consigne est AVANCER
+        double angleRestantATourner; //A un sens seulement si la consigne est TOURNER
 
 //thread
         ///Fonction appelée par la méthode Launch() héritée permettant de lancer l'asservissement du déplacement du robot
