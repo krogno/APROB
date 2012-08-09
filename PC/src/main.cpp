@@ -41,11 +41,28 @@ int main()
     fauxRobot.Avancer(1000);
     while(!fauxRobot.isArrete())
     {
-        cout << fauxRobot.x << endl;
         sf::Sleep(0.1);
     }
-
     fauxRobot.Tourner(-M_PI/2);
+    while(!fauxRobot.isArrete())
+    {
+        sf::Sleep(0.1);
+    }
+    fauxRobot.Orienter(M_PI/2);
+    while(!fauxRobot.isArrete())
+    {
+        sf::Sleep(0.1);
+    }
+    fauxRobot.Avancer(-500);
+    while(!fauxRobot.isArrete())
+    {
+        sf::Sleep(0.1);
+    }
+    fauxRobot.Orienter(-M_PI_4+2*M_PI);
+    while(!fauxRobot.isArrete())
+    {
+        sf::Sleep(0.1);
+    }
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 

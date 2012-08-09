@@ -24,9 +24,9 @@ PARAMETRES CINÉMATIQUES
 ///Vitesse minimum d'avance (en unité de longueur par seconde)
 #define ROBOT_UNICYCLE_VITESSE_AVANCER_MIN          10.0
 ///Vitesse maximum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_TOURNER_MAX          0.3
+#define ROBOT_UNICYCLE_VITESSE_TOURNER_MAX          0.1
 ///Vitesse minimum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_TOURNER_MIN          0.05
+#define ROBOT_UNICYCLE_VITESSE_TOURNER_MIN          0.002
 ///Distance à laquelle la vitesse maximale est atteinte (pour Avancer)
 #define ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX   70.0
 ///Angle à partir duquel la vitesse angulaire maximale est atteinte (en rad, pour Tourner)

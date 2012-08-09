@@ -27,6 +27,7 @@ public:
     ~RobotUnicycle();
     void Avancer(double distance);
     void Tourner(double angle);
+    void Orienter(double angle);
     void Stopper();
     void PasserEnModeRouesLibres();
     bool isArrete();

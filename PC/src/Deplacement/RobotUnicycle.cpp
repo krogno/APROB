@@ -43,6 +43,22 @@ void RobotUnicycle::PasserEnModeRouesLibres()
     SetMoteursEnModeRouesLibres();
 }
 
+void RobotUnicycle::Orienter(double angle)
+{
+    //Orienter le robot d'un angle angle revient à le tourner d'un angle angle-theta
+    sf::Lock lock(mutexMotificationConsignes);
+    consigne=TOURNER;
+    angleRestantATourner=angle-theta;
+    //On choisi angleRestantATourner dans ]-PI,PI] pour éviter des tours inutiles
+    while(angleRestantATourner<-M_PI || angleRestantATourner>=M_PI)
+    {
+            (angleRestantATourner<0)? angleRestantATourner+=2*M_PI : angleRestantATourner-=2*M_PI;
+    }
+    /*
+    Note : puisque mutexMotificationConsignes est verouillé, theta n'est pas mis à jour durant cette boucle et le fait d'utiliser tourner plutôt qu'un test dans Run n'entraine pas d'imprécision supplémentaire
+    */
+}
+
 bool RobotUnicycle::isArrete()
 {
     return (consigne == STOP) || (consigne == ROUE_LIBRE);
@@ -75,20 +91,21 @@ void RobotUnicycle::Run()
                     break;
                 case AVANCER:
                     distanceRestanteAAvancer-=delta_avance;
+                    //std::cout<<"Distance restante a parcourir : "+distanceRestanteAAvancer<<std::endl;
                     if(distanceRestanteAAvancer<0)
                     {
                         //Si la distance restante est inférieure à la précision on stoppe.
-                        if(-distanceRestanteAAvancer <= ROBOT_UNICYCLE_PRECISION_DISTANCE)
+                        if(distanceRestanteAAvancer >= -ROBOT_UNICYCLE_PRECISION_DISTANCE)
                         {
                             consigne=STOP;
                             SetVitessesAngulairesRoues(0,0);
                         }
                         //Si la distance restante est inférieure au seuil, on utilise une rampe décroissante de vitesse
-                        else if(-distanceRestanteAAvancer <= ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX)
+                        else if(distanceRestanteAAvancer >= -ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX)
                         {
                             SetVitessesAngulairesRoues(
-                                -ROBOT_UNICYCLE_VITESSE_MOTEUR_GAUCHE_AVANCER_MIN-ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_MOTEUR_GAUCHE_AVANCER*distanceRestanteAAvancer,
-                                -ROBOT_UNICYCLE_VITESSE_MOTEUR_DROITE_AVANCER_MIN-ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_MOTEUR_DROITE_AVANCER*distanceRestanteAAvancer);
+                                -ROBOT_UNICYCLE_VITESSE_MOTEUR_GAUCHE_AVANCER_MIN+ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_MOTEUR_GAUCHE_AVANCER*distanceRestanteAAvancer,
+                                -ROBOT_UNICYCLE_VITESSE_MOTEUR_DROITE_AVANCER_MIN+ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_MOTEUR_DROITE_AVANCER*distanceRestanteAAvancer);
 
                         }
                         else
@@ -113,6 +130,7 @@ void RobotUnicycle::Run()
                     break;
                 case TOURNER:
                     angleRestantATourner-=delta_theta;
+                    //std::cout<<"Angle restant à tourner"+angleRestantATourner<<std::endl;
                     if(angleRestantATourner < 0)
                     {
                         if(angleRestantATourner >= -ROBOT_UNICYCLE_PRECISION_ANGLE)
