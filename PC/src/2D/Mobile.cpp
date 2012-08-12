@@ -3,7 +3,7 @@
 #include <cmath>
 #include <SFML/System.hpp>
 
-void Mobile::Deplacer(double delta_avance, double delta_theta)
+float Mobile::Deplacer(double delta_avance, double delta_theta)
 {
     static sf::Clock horloge;
     double theta_plus_delta_theta_2=theta+delta_theta/2;
@@ -15,4 +15,5 @@ void Mobile::Deplacer(double delta_avance, double delta_theta)
     vitesse=delta_avance/tempsEcoule;
     omega=delta_theta/tempsEcoule;
 
+    return tempsEcoule;
 }

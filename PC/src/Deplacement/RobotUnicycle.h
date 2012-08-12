@@ -38,7 +38,7 @@ public:
     void Avancer(double distance);
     void Tourner(double angle);
     void Orienter(double angle);
-    void AllerALaPosition(double x, double y, int mode=(MARCHE_AVANT_OU_ARRIERE | RALENTIR_A_L_ARRIVEE), double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE);
+    void AllerALaPosition(double x, double y, double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE,  int mode=(MARCHE_AVANT_OU_ARRIERE | RALENTIR_A_L_ARRIVEE), double my_distanceAjustement=ROBOT_UNICYCLE_PRECISION_DISTANCE);
     void Stopper();
     void PasserEnModeRouesLibres();
     bool isArrete();
@@ -47,15 +47,18 @@ public:
 protected:
         ///Consigne que le robot est en train d'exécuter
         Consigne consigne;
-        //A un sens seulement si la consigne est AVANCER
-        double distanceRestanteAAvancer;
-        //A un sens seulement si la consigne est TOURNER
-        double angleRestantATourner;
+        double erreurLineaire;
+        double erreurLineairePrecedente;
+        double erreurAngulaire;
+        double erreurAngulairePrecedente;
         //A un sens seulement si la consigne est POSITION
         double x_objectif;
         double y_objectif;
         int mode;
-        double precision_carre;
+        double precisionPosition;
+        double distanceAjustement;
+
+
 
 //thread
         ///Fonction appelée par la méthode Launch() héritée permettant de lancer l'asservissement du déplacement du robot
@@ -64,6 +67,10 @@ protected:
         sf::Mutex mutexMotificationConsignes;
         ///Booléen permettant d'arrêter la boucle d'asservissement lorsqu'il passe à faux, afin que le programme termine.
         bool isThreadRunning;
+
+//Correcteurs
+        inline double CorrectionAngulaire(double erreur, double derivee_erreur);
+        inline double CorrectionLineaire(double erreur, double derivee_erreur);
 
 //Méthodes à surcharger
 protected:
