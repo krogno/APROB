@@ -63,7 +63,7 @@ void Carte2D::MettreAJour()
     {
         Objet* objet = it->first;
         sf::Sprite* sprite = it->second;
-        sprite->SetPosition(objet->x, objet->y);
+        sprite->SetPosition(objet->x, -objet->y);
         sprite->SetRotation(objet->theta*RadiansToDegres);
         fenetre.Draw(*sprite);
     }

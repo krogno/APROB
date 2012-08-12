@@ -37,6 +37,8 @@
 		<Unit filename="src/Deplacement/RobotUnicycle.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />
+		<Unit filename="src/angle.cpp" />
+		<Unit filename="src/angle.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion>

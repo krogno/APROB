@@ -29,8 +29,8 @@ int main()
 
 
     Objet point;
-    point.x=2600;
-    point.y=1500;
+    point.x=0;
+    point.y=0;
     carte.AjouterObjet(&point, &spriteCroix);
 
     char a;
@@ -38,7 +38,7 @@ int main()
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
-    fauxRobot.Avancer(1000);
+    /*fauxRobot.Avancer(1000);
     while(!fauxRobot.isArrete())
     {
         sf::Sleep(0.1);
@@ -62,7 +62,29 @@ int main()
     while(!fauxRobot.isArrete())
     {
         sf::Sleep(0.1);
-    }
+    }*/
+
+    Objet point2;
+    point2.x=1000;
+    point2.y=0;
+    carte.AjouterObjet(&point2, &spriteCroix);
+    fauxRobot.AllerALaPosition(point2.x,point2.y);
+    while(!fauxRobot.isArrete())
+        sf::Sleep(0.1);
+    Objet point3;
+    point3.x=1000;
+    point3.y=-500;
+    carte.AjouterObjet(&point3, &spriteCroix);
+    fauxRobot.AllerALaPosition(point3.x,point3.y);
+    while(!fauxRobot.isArrete())
+        sf::Sleep(0.1);
+    Objet point4;
+    point4.x=800;
+    point4.y=-200;
+    carte.AjouterObjet(&point4, &spriteCroix);
+    fauxRobot.AllerALaPosition(point4.x,point4.y);
+    while(!fauxRobot.isArrete())
+        sf::Sleep(0.1);
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 

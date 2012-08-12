@@ -8,7 +8,7 @@
 ///Consigne que peut suivre le robot
 enum Consigne
 {
-  AVANCER, TOURNER, STOP, ROUE_LIBRE
+  AVANCER, TOURNER, POSITION, STOP, ROUE_LIBRE
 };
 
 /**
@@ -28,6 +28,7 @@ public:
     void Avancer(double distance);
     void Tourner(double angle);
     void Orienter(double angle);
+    void AllerALaPosition(double x, double y);
     void Stopper();
     void PasserEnModeRouesLibres();
     bool isArrete();
@@ -37,6 +38,8 @@ protected:
         Consigne consigne;
         double distanceRestanteAAvancer; //A un sens seulement si la consigne est AVANCER
         double angleRestantATourner; //A un sens seulement si la consigne est TOURNER
+        double x_objectif; //A un sens seulement si la consigne est POSITION
+        double y_objectif;
 
 //thread
         ///Fonction appelée par la méthode Launch() héritée permettant de lancer l'asservissement du déplacement du robot
