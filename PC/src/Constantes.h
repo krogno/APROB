@@ -24,13 +24,13 @@ PARAMETRES CINÉMATIQUES
 ///Vitesse minimum d'avance (en unité de longueur par seconde)
 #define ROBOT_UNICYCLE_VITESSE_AVANCER_MIN          10.0
 ///Vitesse maximum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_ROTATION_MAX          0.5
+#define ROBOT_UNICYCLE_VITESSE_ROTATION_MAX          0.3
 ///Vitesse minimum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_ROTATION_MIN          0.02
+#define ROBOT_UNICYCLE_VITESSE_ROTATION_MIN          0.01
 ///Distance à laquelle la vitesse maximale est atteinte (pour Avancer)
-#define ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX   70.0
+#define ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX   200.0
 ///Angle à partir duquel la vitesse angulaire maximale est atteinte (en rad, pour Tourner)
-#define ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX      M_PI/180*10
+#define ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX      M_PI/180*30
 
 /*
 PARAMÈTRES DE PRÉCISION
@@ -39,7 +39,10 @@ PARAMÈTRES DE PRÉCISION
 #define ROBOT_UNICYCLE_PRECISION_DISTANCE           10.0
 ///précision utilisée pour arrêter un ordre en rotation.
 #define ROBOT_UNICYCLE_PRECISION_ANGLE              M_PI/180*1
-
+///Vitesse maximale auquelle peut avancer le robot pour être considérer comme arrêté (en unité de longueur/s)
+#define ROBOT_UNICYCLE_EPSILON_VITESSE              2
+///Vitesse maximale auquelle peut tourner le robot pour être considérer comme arrêté (en rad/s)
+#define ROBOT_UNICYCLE_EPSILON_OMEGA                M_PI/180*1
 /*
 PARAMÈTRES D'ASSERVISSEMENT
 */

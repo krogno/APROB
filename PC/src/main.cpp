@@ -27,31 +27,6 @@ int main()
     Carte2D carte("ressources/terrain2012.png", 93,123,500.0/123, 500.0/123);
     carte.Launch();
 
-    /*fauxRobot.Avancer(1000);
-    while(!fauxRobot.isArrete())
-    {
-        sf::Sleep(0.1);
-    }
-    fauxRobot.Tourner(-M_PI/2);
-    while(!fauxRobot.isArrete())
-    {
-        sf::Sleep(0.1);
-    }
-    fauxRobot.Orienter(M_PI/2);
-    while(!fauxRobot.isArrete())
-    {
-        sf::Sleep(0.1);
-    }
-    fauxRobot.Avancer(-500);
-    while(!fauxRobot.isArrete())
-    {
-        sf::Sleep(0.1);
-    }
-    fauxRobot.Orienter(-M_PI_4+2*M_PI);
-    while(!fauxRobot.isArrete())
-    {
-        sf::Sleep(0.1);
-    }*/
     Objet point;
     point.x=0;
     point.y=0;
@@ -63,29 +38,46 @@ int main()
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
     Objet point2;
-    point2.x=1000;
+    point2.x=2000;
     point2.y=0;
     carte.AjouterObjet(&point2, &spriteCroix);
-    fauxRobot.AllerALaPosition(point2.x,point2.y);
-    while(!fauxRobot.isArrete())
+    fauxRobot.AllerALaPosition(point2.x,point2.y, MARCHE_AVANT | RALENTIR_A_L_ARRIVEE,50);
+    while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
     Objet point3;
-    point3.x=1000;
-    point3.y=-500;
+    point3.x=2000;
+    point3.y=-1000;
     carte.AjouterObjet(&point3, &spriteCroix);
-    fauxRobot.AllerALaPosition(point3.x,point3.y);
-    while(!fauxRobot.isArrete())
+    fauxRobot.AllerALaPosition(point3.x,point3.y, MARCHE_AVANT | RALENTIR_A_L_ARRIVEE,50);
+    while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
     Objet point4;
-    point4.x=800;
-    point4.y=-200;
+    point4.x=300;
+    point4.y=-1500;
     carte.AjouterObjet(&point4, &spriteCroix);
-    fauxRobot.AllerALaPosition(point4.x,point4.y);
-    while(!fauxRobot.isArrete())
+    fauxRobot.AllerALaPosition(point4.x,point4.y,  MARCHE_AVANT | RALENTIR_A_L_ARRIVEE,50);
+    while(fauxRobot.getConsigne() != STOP)
+        sf::Sleep(0.1);
+    Objet point5;
+    point5.x=800;
+    point5.y=-1000;
+    carte.AjouterObjet(&point5, &spriteCroix);
+    fauxRobot.AllerALaPosition(point5.x,point5.y,  MARCHE_AVANT | RALENTIR_A_L_ARRIVEE,5);
+    while(fauxRobot.getConsigne() != STOP)
+        sf::Sleep(0.1);
+    fauxRobot.Avancer(-300);
+    while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
 
+    fauxRobot.Orienter(0);
+    while(fauxRobot.getConsigne() != STOP)
+        sf::Sleep(0.1);
+    sf::Sleep(2);
+    fauxRobot.Tourner(2*M_PI);
+    while(fauxRobot.getConsigne() != STOP)
+        sf::Sleep(0.1);
     char a;
-    cout << "Entrer un caractere pour continuer" << endl;
+    cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;
 
 

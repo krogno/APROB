@@ -14,6 +14,13 @@ public:
     (Deplacer à n'utiliser que pour des petits déplacements, puisque cette définition n'est pas rigoureuse)
     */
     void Deplacer(double delta_avance, double delta_theta);
+
+    protected:
+    ///Estimation de la vitesse linéaire d'après les appels à Deplacer
+    double vitesse;
+    ///Estimation de la vitesse angulaire d'après les appels à Deplacer
+    double omega;
+    //Note : la téléportation (modification de x, y ou theta manuellement) est ignorée pour les calculs de vitesse
 };
 
 

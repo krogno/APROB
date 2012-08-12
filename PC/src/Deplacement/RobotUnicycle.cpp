@@ -29,12 +29,14 @@ void RobotUnicycle::Tourner(double angle)
     angleRestantATourner=angle;
 }
 
-void RobotUnicycle::AllerALaPosition(double x, double y)
+void RobotUnicycle::AllerALaPosition(double x, double y, int my_mode, double my_precision)
 {
     sf::Lock lock(mutexMotificationConsignes);
     consigne=POSITION;
     x_objectif=x;
     y_objectif=y;
+    mode=my_mode;
+    precision_carre=my_precision*my_precision;
 }
 
 void RobotUnicycle::Stopper()
@@ -65,7 +67,13 @@ void RobotUnicycle::Orienter(double angle)
 
 bool RobotUnicycle::isArrete()
 {
-    return (consigne == STOP) || (consigne == ROUE_LIBRE);
+ // return (consigne == STOP) || (consigne == ROUE_LIBRE);
+ return ((std::abs(vitesse) < ROBOT_UNICYCLE_EPSILON_VITESSE) && (std::abs(omega) < ROBOT_UNICYCLE_EPSILON_OMEGA));
+}
+
+Consigne RobotUnicycle::getConsigne()
+{
+    return consigne;
 }
 
 void RobotUnicycle::Run()
@@ -83,6 +91,7 @@ void RobotUnicycle::Run()
             double delta_avance, delta_theta;
             GetDeplacement(delta_avance, delta_theta); //Dépendant de l'implémentation du robot
             Deplacer(delta_avance, delta_theta);
+            //std::cout<<"x"<<x<<"\t\t"<<"y"<<y<<std::endl;
 
             //Asservissement et mise à jour des consignes de vitesse des moteurs
             switch(consigne)
@@ -99,7 +108,7 @@ void RobotUnicycle::Run()
                 if(distanceRestanteAAvancer<0)
                 {
                     //Si la distance restante est inférieure à la précision on stoppe.
-                    if(distanceRestanteAAvancer >= -ROBOT_UNICYCLE_PRECISION_DISTANCE)
+                    if(distanceRestanteAAvancer >= -ROBOT_UNICYCLE_PRECISION_DISTANCE && isArrete())
                     {
                         consigne=STOP;
                         SetVitessesAngulairesRoues(0,0);
@@ -117,7 +126,7 @@ void RobotUnicycle::Run()
                 }
                 else
                 {
-                    if(distanceRestanteAAvancer <= ROBOT_UNICYCLE_PRECISION_DISTANCE)
+                    if(distanceRestanteAAvancer <= ROBOT_UNICYCLE_PRECISION_DISTANCE && isArrete())
                     {
                         consigne=STOP;
                         SetVitessesAngulairesRoues(0,0);
@@ -137,7 +146,7 @@ void RobotUnicycle::Run()
                 //std::cout<<"Angle restant à tourner"+angleRestantATourner<<std::endl;
                 if(angleRestantATourner < 0)
                 {
-                    if(angleRestantATourner >= -ROBOT_UNICYCLE_PRECISION_ANGLE)
+                    if(angleRestantATourner >= -ROBOT_UNICYCLE_PRECISION_ANGLE && isArrete())
                     {
                         consigne=STOP;
                         SetVitessesAngulairesRoues(0,0);
@@ -154,7 +163,7 @@ void RobotUnicycle::Run()
                 }
                 else
                 {
-                    if(angleRestantATourner <= ROBOT_UNICYCLE_PRECISION_ANGLE)
+                    if(angleRestantATourner <= ROBOT_UNICYCLE_PRECISION_ANGLE && isArrete())
                     {
                         consigne=STOP;
                         SetVitessesAngulairesRoues(0,0);
@@ -174,20 +183,28 @@ void RobotUnicycle::Run()
                 double delta_x=x_objectif-x;
                 double delta_y=y_objectif-y;
                 double delta_theta=BornerA_MoinsPi_Pi(atan2(delta_y, delta_x)-theta);
-                if(delta_x*delta_x+delta_y*delta_y <= ROBOT_UNICYCLE_PRECISION_DISTANCE_CARRE)
+
+                double distanceRestanteCarre=delta_x*delta_x+delta_y*delta_y;
+                if(distanceRestanteCarre <= precision_carre)
                 {
                     consigne=STOP;
                     SetVitessesAngulairesRoues(0,0);
                 }
                 else
                 {
-                    if(delta_theta > -M_PI/2 && delta_theta < M_PI/2)
+                    double vitesse= ((mode & RALENTIR_A_L_ARRIVEE) && distanceRestanteCarre <= ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX*ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX)?
+                        distanceRestanteCarre/(ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX*ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX)
+                        : 1;
+                        /*if(vitesse < ROBOT_UNICYCLE_VITESSE_AVANCER_MIN/ROBOT_UNICYCLE_VITESSE_AVANCER_MAX)
+                            vitesse=ROBOT_UNICYCLE_VITESSE_AVANCER_MIN/ROBOT_UNICYCLE_VITESSE_AVANCER_MAX;*/
+                    if(((mode & MARCHE_AVANT) && delta_theta > -M_PI/2 && delta_theta < M_PI/2) || !(mode & MARCHE_ARRIERE))
                     {
                         double correction_angle = (std::abs(delta_theta) < ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX)?
                         delta_theta*ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_LINEAIRE_TOURNER
+                        //+((delta_theta >=0)? ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MIN : -ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MIN)
                         : delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX/(M_PI/2);
                         double abs_correction=std::abs(correction_angle);
-                        double vitesse=(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
+                        vitesse*=(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
                         SetVitessesAngulairesRoues(
                             (vitesse-correction_angle)/ROBOT_UNICYCLE_RAYON_GAUCHE,
                             (vitesse+correction_angle)/ROBOT_UNICYCLE_RAYON_DROITE);
@@ -197,9 +214,10 @@ void RobotUnicycle::Run()
                         delta_theta=BornerA_MoinsPi_Pi(delta_theta-M_PI);
                         double correction_angle = (std::abs(delta_theta) < ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX)?
                         delta_theta*ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_LINEAIRE_TOURNER
+                        //+((delta_theta >=0)? ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MIN : -ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MIN)
                         : delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX/(M_PI/2);
                         double abs_correction=std::abs(correction_angle);
-                        double vitesse=-(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
+                        vitesse*=-(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
                         SetVitessesAngulairesRoues(
                             (vitesse-correction_angle)/ROBOT_UNICYCLE_RAYON_GAUCHE,
                             (vitesse+correction_angle)/ROBOT_UNICYCLE_RAYON_DROITE);

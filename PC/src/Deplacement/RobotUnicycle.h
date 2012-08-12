@@ -3,6 +3,7 @@
 
 #include <SFML/System.hpp>
 #include "2D/Mobile.h"
+#include "Constantes.h"
 
 
 ///Consigne que peut suivre le robot
@@ -10,6 +11,15 @@ enum Consigne
 {
   AVANCER, TOURNER, POSITION, STOP, ROUE_LIBRE
 };
+
+///Différents modes que peut avoir à respecter le robot
+/*Note : ce sont des flags qui peuvent être combinés entre eux
+par exemple (MARCHE_AVANT | RALENTIR_A_L_ARRIVEE) signifie que la marche avant est autorisée et qu'il faut ralentir à l'arrivée*/
+#define MARCHE_AVANT                1<<0
+#define MARCHE_ARRIERE              1<<1
+#define RALENTIR_A_L_ARRIVEE        1<<3
+#define MARCHE_AVANT_OU_ARRIERE     MARCHE_AVANT | MARCHE_ARRIERE
+
 
 /**
 Un RobotUnicycle est un robot théorique se déplaçant dans le plan avec deux roues parallèles.
@@ -28,18 +38,24 @@ public:
     void Avancer(double distance);
     void Tourner(double angle);
     void Orienter(double angle);
-    void AllerALaPosition(double x, double y);
+    void AllerALaPosition(double x, double y, int mode=(MARCHE_AVANT_OU_ARRIERE | RALENTIR_A_L_ARRIVEE), double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE);
     void Stopper();
     void PasserEnModeRouesLibres();
     bool isArrete();
+    Consigne getConsigne();
 
 protected:
         ///Consigne que le robot est en train d'exécuter
         Consigne consigne;
-        double distanceRestanteAAvancer; //A un sens seulement si la consigne est AVANCER
-        double angleRestantATourner; //A un sens seulement si la consigne est TOURNER
-        double x_objectif; //A un sens seulement si la consigne est POSITION
+        //A un sens seulement si la consigne est AVANCER
+        double distanceRestanteAAvancer;
+        //A un sens seulement si la consigne est TOURNER
+        double angleRestantATourner;
+        //A un sens seulement si la consigne est POSITION
+        double x_objectif;
         double y_objectif;
+        int mode;
+        double precision_carre;
 
 //thread
         ///Fonction appelée par la méthode Launch() héritée permettant de lancer l'asservissement du déplacement du robot
