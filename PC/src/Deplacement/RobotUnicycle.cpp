@@ -183,7 +183,9 @@ void RobotUnicycle::Run()
                 {
                     if(delta_theta > -M_PI/2 && delta_theta < M_PI/2)
                     {
-                        double correction_angle=delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX;
+                        double correction_angle = (std::abs(delta_theta) < ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX)?
+                        delta_theta*ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_LINEAIRE_TOURNER
+                        : delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX/(M_PI/2);
                         double abs_correction=std::abs(correction_angle);
                         double vitesse=(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
                         SetVitessesAngulairesRoues(
@@ -193,7 +195,9 @@ void RobotUnicycle::Run()
                     else
                     {
                         delta_theta=BornerA_MoinsPi_Pi(delta_theta-M_PI);
-                        double correction_angle=delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX;
+                        double correction_angle = (std::abs(delta_theta) < ROBOT_UNICYCLE_ANGLE_SEUIL_VITESSE_MAX)?
+                        delta_theta*ROBOT_UNICYCLE_TAUX_ACCROISSEMENT_VITESSE_LINEAIRE_TOURNER
+                        : delta_theta*ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROTATION_MAX/(M_PI/2);
                         double abs_correction=std::abs(correction_angle);
                         double vitesse=-(ROBOT_UNICYCLE_VITESSE_AVANCER_MAX-abs_correction)/(abs_correction+1);
                         SetVitessesAngulairesRoues(
