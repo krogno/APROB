@@ -1,16 +1,20 @@
 #include "RobotUnicycleVirtuel.h"
 #include "Constantes.h"
 
-RobotUnicycleVirtuel::RobotUnicycleVirtuel()
+
+RobotUnicycleVirtuel::RobotUnicycleVirtuel(double retard_s)
 {
     vitesseDroite=0;
     vitesseGauche=0;
+    vitesseGauche_consigne=0;
+    vitesseDroite_consigne=0;
+    retard=retard_s;
 }
 
 void RobotUnicycleVirtuel::SetVitessesAngulairesRoues(double vG, double vD)
 {
-    vitesseGauche=vG;
-    vitesseDroite=vD;
+    vitesseGauche_consigne=vG;
+    vitesseDroite_consigne=vD;
 }
 
 void RobotUnicycleVirtuel::SetMoteursEnModeRouesLibres()
@@ -25,6 +29,10 @@ void RobotUnicycleVirtuel::GetDeplacement(double& delta_avance, double& delta_th
 {
     static  sf::Clock horloge;
     float tempsEcoule=horloge.GetElapsedTime();
+    //Mise à jour des consignes de vitesse (la manière dont c'est calculé est un peu pifométrique je l'accorde, mais j'avais pas envie de trainer des exponentiells)
+    vitesseGauche=vitesseGauche+(vitesseGauche_consigne-vitesseGauche)*tempsEcoule/retard;
+    vitesseDroite=vitesseDroite+(vitesseDroite_consigne-vitesseDroite)*tempsEcoule/retard;
+    //Mise à jour des déplacements
     delta_avance=(ROBOT_UNICYCLE_RAYON_GAUCHE*vitesseGauche+ROBOT_UNICYCLE_RAYON_DROITE*vitesseDroite)/2*tempsEcoule;
     delta_theta=(ROBOT_UNICYCLE_RAYON_DROITE*vitesseDroite-ROBOT_UNICYCLE_RAYON_GAUCHE*vitesseGauche)/ROBOT_UNICYCLE_DISTANCE_ROUES*tempsEcoule;
     horloge.Reset();

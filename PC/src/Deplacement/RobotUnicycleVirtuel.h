@@ -9,13 +9,19 @@ Cette classe implémente un robot unicycle virtuel, d'inertie nulle et d'asservi
 class RobotUnicycleVirtuel : public RobotUnicycle
 {
 public:
-    RobotUnicycleVirtuel();
+    //Créé un robot virtuel qui dont l'asservissement en vitesse présente un retard pour plus de réalisme
+    RobotUnicycleVirtuel(double retard);
 protected:
     void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite);
     void GetDeplacement(double& delta_avance, double& delta_theta);
     void SetMoteursEnModeRouesLibres();
+    //Vitesse effective
     double vitesseGauche;
     double vitesseDroite;
+    //Consignes de vitesse
+    double vitesseGauche_consigne;
+    double vitesseDroite_consigne;
+    double retard;
 };
 
 #endif

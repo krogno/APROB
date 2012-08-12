@@ -27,17 +27,6 @@ int main()
     Carte2D carte("ressources/terrain2012.png", 93,123,500.0/123, 500.0/123);
     carte.Launch();
 
-
-    Objet point;
-    point.x=0;
-    point.y=0;
-    carte.AjouterObjet(&point, &spriteCroix);
-
-    char a;
-    RobotUnicycleVirtuel fauxRobot;
-    fauxRobot.Launch();
-    carte.AjouterObjet(&fauxRobot, &spriteBete);
-
     /*fauxRobot.Avancer(1000);
     while(!fauxRobot.isArrete())
     {
@@ -63,6 +52,15 @@ int main()
     {
         sf::Sleep(0.1);
     }*/
+    Objet point;
+    point.x=0;
+    point.y=0;
+    carte.AjouterObjet(&point, &spriteCroix);
+
+    //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
+    RobotUnicycleVirtuel fauxRobot(0.5);
+    fauxRobot.Launch();
+    carte.AjouterObjet(&fauxRobot, &spriteBete);
 
     Objet point2;
     point2.x=1000;
@@ -85,6 +83,8 @@ int main()
     fauxRobot.AllerALaPosition(point4.x,point4.y);
     while(!fauxRobot.isArrete())
         sf::Sleep(0.1);
+
+    char a;
     cout << "Entrer un caractere pour continuer" << endl;
     cin>>a;
 

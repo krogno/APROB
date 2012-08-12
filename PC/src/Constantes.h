@@ -20,13 +20,13 @@ PARAMETRES GÉOMETRIQUES
 PARAMETRES CINÉMATIQUES
 */
 ///Vitesse maximum d'avance (en unité de longueur par seconde)
-#define ROBOT_UNICYCLE_VITESSE_AVANCER_MAX          100.0
+#define ROBOT_UNICYCLE_VITESSE_AVANCER_MAX          500.0
 ///Vitesse minimum d'avance (en unité de longueur par seconde)
 #define ROBOT_UNICYCLE_VITESSE_AVANCER_MIN          10.0
 ///Vitesse maximum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_ROTATION_MAX          0.1
+#define ROBOT_UNICYCLE_VITESSE_ROTATION_MAX          0.5
 ///Vitesse minimum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_ROTATION_MIN          0.002
+#define ROBOT_UNICYCLE_VITESSE_ROTATION_MIN          0.02
 ///Distance à laquelle la vitesse maximale est atteinte (pour Avancer)
 #define ROBOT_UNICYCLE_DISTANCE_SEUIL_VITESSE_MAX   70.0
 ///Angle à partir duquel la vitesse angulaire maximale est atteinte (en rad, pour Tourner)
