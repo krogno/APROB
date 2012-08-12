@@ -4,7 +4,7 @@
 #include "RobotUnicycle.h"
 
 /**
-Cette classe implémente un robot unicycle virtuel, d'inertie nulle et d'asservissement idéal afin de pouvoir tester des algorithmes sans robot connecté.
+Cette classe implémente un robot unicycle virtuel afin de pouvoir tester des algorithmes sans robot connecté.
 */
 class RobotUnicycleVirtuel : public RobotUnicycle
 {
