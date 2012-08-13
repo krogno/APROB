@@ -20,9 +20,9 @@ PARAMETRES GÉOMETRIQUES
 PARAMETRES CINÉMATIQUES
 */
 ///Vitesse maximum de translation (en unité de longueur par seconde)
-#define ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX       500.0
-///Vitesse maximum de rotation (en tr/s)
-#define ROBOT_UNICYCLE_VITESSE_ROTATION_MAX          0.5
+#define ROBOT_UNICYCLE_VITESSE_MAX       500.0
+///Vitesse maximum de rotation (en rad/s)
+#define ROBOT_UNICYCLE_OMEGA_MAX                    2*M_PI*0.5
 
 /*
 PARAMÈTRES DE PRÉCISION
@@ -39,16 +39,11 @@ PARAMÈTRES DE PRÉCISION
 PARAMÈTRES D'ASSERVISSEMENT
 */
 ///Période d'asservissement du côté PC (en s)
-#define ROBOT_UNICYCLE_PERIODE_ASSERVISSEMENT       0.01
-#define ROBOT_UNICYCLE_KP_ROTATION                  1000.0
-#define ROBOT_UNICYCLE_KD_ROTATION                  100.0
+#define ROBOT_UNICYCLE_PERIODE_ASSERVISSEMENT       0.02
+#define ROBOT_UNICYCLE_KP_ROTATION                  50.0
+#define ROBOT_UNICYCLE_KD_ROTATION                  10.0
 
-#define ROBOT_UNICYCLE_KP_TRANSLATION               1000.0
-#define ROBOT_UNICYCLE_KD_TRANSLATION               100.0
-
-/*
-CONSTANTES DÉDUITES
-*/
-#define ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX ROBOT_UNICYCLE_VITESSE_ROTATION_MAX*2*M_PI*ROBOT_UNICYCLE_DISTANCE_ROUES/2
+#define ROBOT_UNICYCLE_KP_TRANSLATION               50.0
+#define ROBOT_UNICYCLE_KD_TRANSLATION               10.0
 
 #endif

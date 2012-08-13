@@ -38,8 +38,8 @@ void RobotUnicycle::AllerALaPosition(double x, double y, double my_precision, in
     x_objectif=x;
     y_objectif=y;
     mode=my_mode;
-    precisionPosition=my_precision;
-    distanceAjustement=my_distanceAjustement;
+    precisionPositionCarre=my_precision*my_precision;
+    distanceAjustementCarre=my_distanceAjustement*my_distanceAjustement;
 
     erreurAngulaire=0;
     erreurLineaire=0;
@@ -51,7 +51,7 @@ void RobotUnicycle::Stopper()
 {
     sf::Lock lock(mutexMotificationConsignes);
     consigne=STOP;
-    SetVitessesAngulairesRoues(0,0);
+    SetVitesses(0,0);
 }
 
 void RobotUnicycle::PasserEnModeRouesLibres()
@@ -106,7 +106,7 @@ void RobotUnicycle::Run()
             switch(consigne)
             {
             case STOP:
-                SetVitessesAngulairesRoues(0,0);
+                SetVitesses(0,0);
                 break;
             case ROUE_LIBRE:
                 SetMoteursEnModeRouesLibres();
@@ -115,11 +115,11 @@ void RobotUnicycle::Run()
             {
                 erreurLineaire+=delta_avance;
                 double correctionLineaire=CorrectionLineaire(erreurLineaire,(erreurLineaire-erreurLineairePrecedente)/delta_t);
-                SetVitessesAngulairesRoues(-correctionLineaire/ROBOT_UNICYCLE_RAYON_GAUCHE, -correctionLineaire/ROBOT_UNICYCLE_RAYON_DROITE);
+                SetVitesses(-correctionLineaire, 0);
                 if(std::abs(erreurLineaire) <= ROBOT_UNICYCLE_PRECISION_ANGLE && isArrete())
                 {
                     consigne=STOP;
-                    SetVitessesAngulairesRoues(0,0);
+                    SetVitesses(0,0);
                 }
                 erreurLineairePrecedente=erreurLineaire;
                 break;
@@ -128,11 +128,11 @@ void RobotUnicycle::Run()
             {
                 erreurAngulaire+=delta_theta;
                 double correctionAngulaire=CorrectionAngulaire(erreurAngulaire, (erreurAngulaire-erreurAngulairePrecedente)/delta_t);
-                SetVitessesAngulairesRoues(correctionAngulaire/ROBOT_UNICYCLE_RAYON_GAUCHE, -correctionAngulaire/ROBOT_UNICYCLE_RAYON_DROITE);
+                SetVitesses(0, -correctionAngulaire);
                 if(std::abs(erreurAngulaire) <= ROBOT_UNICYCLE_PRECISION_ANGLE && isArrete())
                 {
                     consigne=STOP;
-                    SetVitessesAngulairesRoues(0,0);
+                    SetVitesses(0,0);
                 }
                 erreurAngulairePrecedente=erreurAngulaire;
                 break;
@@ -143,36 +143,32 @@ void RobotUnicycle::Run()
                 double delta_x=x_objectif-x;
                 double delta_y=y_objectif-y;
 
-                erreurLineaire=sqrt(delta_x*delta_x+delta_y*delta_y);
+                double distanceRestanteCarre=delta_x*delta_x+delta_y*delta_y;
+                erreurLineaire=-(cos(theta)*delta_x+sin(theta)*delta_y);
 
-                if(erreurLineaire <= precisionPosition && (!(mode & RALENTIR_A_L_ARRIVEE) || isArrete()))
+                if(distanceRestanteCarre <= precisionPositionCarre)
                 {
-                    consigne=STOP;
-                    SetVitessesAngulairesRoues(0,0);
+                    SetVitesses(0,0);
+                    if(!(mode & RALENTIR_A_L_ARRIVEE) || isArrete())
+                    {
+                        consigne=STOP;
+                    }
                     break;
                 }
 
                 erreurAngulaire=BornerA_MoinsPi_Pi(theta-atan2(delta_y, delta_x));
 
-                if(((mode & MARCHE_AVANT) && erreurAngulaire >= -M_PI/2 && erreurAngulaire <= M_PI/2) || (!(mode & MARCHE_ARRIERE) && erreurLineaire > distanceAjustement))
+                if(((erreurAngulaire >= -M_PI/2 && erreurAngulaire <= M_PI/2) && ((mode & MARCHE_AVANT) || (distanceRestanteCarre < distanceAjustementCarre))) || !(mode & MARCHE_ARRIERE))
                 {
                     //Si l'objectif est devant, ou si la marche arrière n'est pas autorisée et qu'on n'est pas suffisament près de l'objectif pour considérer ça comme un ajustement de position
                     //On va vers l'objectif en marche avant
-                    erreurLineaire=-erreurLineaire;
 
                     double correctionAngulaire=CorrectionAngulaire(erreurAngulaire, (erreurAngulaire-erreurAngulairePrecedente)/delta_t);
-                    if(std::abs(correctionAngulaire) > ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX)
-                        std::cout<<"angle "<<correctionAngulaire<<std::endl;
                     double correctionLineaire=(mode & RALENTIR_A_L_ARRIVEE)?
                                               CorrectionLineaire(erreurLineaire, (erreurLineaire-erreurLineairePrecedente)/delta_t)
-                                              : -ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX;
+                                              : -ROBOT_UNICYCLE_VITESSE_MAX;
 
-                    double facteur=1-std::abs(correctionAngulaire)/ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX;
-                    if(facteur > 0)
-                        correctionLineaire*=facteur;
-                    else
-                        correctionLineaire=0;
-                    SetVitessesAngulairesRoues((-correctionLineaire+correctionAngulaire)/ROBOT_UNICYCLE_RAYON_GAUCHE, (-correctionLineaire-correctionAngulaire)/ROBOT_UNICYCLE_RAYON_DROITE);
+                    SetVitesses(-correctionLineaire, -correctionAngulaire);
                 }
                 else
                 {
@@ -181,17 +177,11 @@ void RobotUnicycle::Run()
                     erreurAngulaire=BornerA_MoinsPi_Pi(erreurAngulaire-M_PI);
 
                     double correctionAngulaire=CorrectionAngulaire(erreurAngulaire, (erreurAngulaire-erreurAngulairePrecedente)/tempsEcoule);
-                    if(std::abs(correctionAngulaire) > ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX)
-                        std::cout<<"angle "<<correctionAngulaire<<std::endl;
                     double correctionLineaire=(mode & RALENTIR_A_L_ARRIVEE)?
                                               CorrectionLineaire(erreurLineaire, (erreurLineaire-erreurLineairePrecedente)/tempsEcoule)
-                                              : ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX;
-                    double facteur=1-std::abs(correctionAngulaire)/ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX;
-                    if(facteur > 0)
-                        correctionLineaire*=facteur;
-                    else
-                        correctionLineaire=0;
-                    SetVitessesAngulairesRoues((-correctionLineaire+correctionAngulaire)/ROBOT_UNICYCLE_RAYON_GAUCHE, (-correctionLineaire-correctionAngulaire)/ROBOT_UNICYCLE_RAYON_DROITE);
+                                              : ROBOT_UNICYCLE_VITESSE_MAX;
+
+                    SetVitesses(-correctionLineaire, -correctionAngulaire);
                 }
 
                 erreurAngulairePrecedente=erreurAngulaire;
@@ -211,20 +201,20 @@ void RobotUnicycle::Run()
 double RobotUnicycle::CorrectionAngulaire(double erreur, double derivee_erreur)
 {
     double PD=ROBOT_UNICYCLE_KP_ROTATION*erreur+ROBOT_UNICYCLE_KD_ROTATION*derivee_erreur;
-    if(PD < -ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX)
-        return -ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX;
-    else if (PD> ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX)
-        return ROBOT_UNICYCLE_VITESSE_LINEAIRE_ROUE_ROTATION_MAX;
+    if(PD < -ROBOT_UNICYCLE_OMEGA_MAX)
+        return -ROBOT_UNICYCLE_OMEGA_MAX;
+    else if (PD> ROBOT_UNICYCLE_OMEGA_MAX)
+        return ROBOT_UNICYCLE_OMEGA_MAX;
     else return PD;
 }
 
 double RobotUnicycle::CorrectionLineaire(double erreur, double derivee_erreur)
 {
     double PD=ROBOT_UNICYCLE_KP_TRANSLATION*erreur+ROBOT_UNICYCLE_KD_TRANSLATION*derivee_erreur;
-    if(PD < -ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX)
-        return -ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX;
-    else if (PD> ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX)
-        return ROBOT_UNICYCLE_VITESSE_TRANSLATION_MAX;
+    if(PD < -ROBOT_UNICYCLE_VITESSE_MAX)
+        return -ROBOT_UNICYCLE_VITESSE_MAX;
+    else if (PD> ROBOT_UNICYCLE_VITESSE_MAX)
+        return ROBOT_UNICYCLE_VITESSE_MAX;
     else return PD;
 }
 

@@ -55,8 +55,8 @@ protected:
         double x_objectif;
         double y_objectif;
         int mode;
-        double precisionPosition;
-        double distanceAjustement;
+        double precisionPositionCarre;
+        double distanceAjustementCarre;
 
 
 
@@ -75,7 +75,7 @@ protected:
 //Méthodes à surcharger
 protected:
         ///Envoyer une consigne de vitesse aux moteurs, à surcharger
-        virtual void SetVitessesAngulairesRoues(double vitesseGauche, double vitesseDroite)=0;
+        virtual void SetVitesses(double vitesse_avance, double omega)=0;
         ///Recevoir le déplacement du robot depuis le dernier appel de cette fonction, à surcharger
         //Ici comme une fonction ne peut renvoyer qu'une valeur, les arguments de la fonction sont modifiés directement.
         virtual void GetDeplacement(double& delta_avance, double& delta_theta)=0;

@@ -62,7 +62,7 @@ int main()
     point5.x=800;
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
-    fauxRobot.AllerALaPosition(point5.x,point5.y, 10, MARCHE_AVANT | RALENTIR_A_L_ARRIVEE);
+    fauxRobot.AllerALaPosition(point5.x,point5.y, 5, MARCHE_AVANT | RALENTIR_A_L_ARRIVEE, 30);
     while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
 
