@@ -1,0 +1,25 @@
+La carte moteur est comme une mémoire EEPROM accessible en i2c, à l'adresse 0x50.
+
+carte moteur : 
+0x00 -> 0x03 : ordre (et bientot etat du robot)
+0x04 -> 0x07 : Compteur 1 et 2 (roue codeuse)
+0x08 -> 0x0B : Position X du robot
+0x0C -> 0x0F : Position Y du robot
+0x10 -> 0x13 : Angle theta du robot
+0x14 -> 0x44 : Zone echange
+.... : Memoire pour les courbes d'asservissement
+
+ordres :
+0x90 : Envoyer les parametres du robot (écartement entre les roues ...) ---- Ne fonctionne pas encore
+0x91 : Envoyer les parametres PID
+0x92 : Recuperer les parametres PID ---- Ne fonctionne pas encore
+0x93 : Recuperer les parametres du robot
+0x81 : Avancer (d'une distance en mm)
+0x82 : Tourner (angle en radian)
+0x83 : Aller en (X,Y).
+
+etats du robot : ---- Ne fonctionne pas encore
+0x00 : Arreté
+0x01 : Avance
+0x02 : Tourne sur lui meme
+
