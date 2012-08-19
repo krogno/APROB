@@ -35,11 +35,14 @@
 		<Unit filename="src/Constantes.h" />
 		<Unit filename="src/Deplacement/RobotUnicycle.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycle.h" />
+		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />
 		<Unit filename="src/angle.cpp" />
 		<Unit filename="src/angle.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/serialib/serialib.cpp" />
+		<Unit filename="src/serialib/serialib.h" />
 		<Extensions>
 			<code_completion>
 				<search_path add="src" />
