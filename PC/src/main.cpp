@@ -2,11 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "Carte2D/Carte2D.h"
 #include "Deplacement/RobotUnicycleVirtuel.h"
+#include "Deplacement/RobotUnicycleCarteArduino.h"
 
 using namespace std;
 
 int main()
 {
+
     //Chargement des images et création des sprites pour l'affichage
     sf::Image imageCroix;
     if (!imageCroix.LoadFromFile("ressources/croix.tga"))
@@ -33,7 +35,8 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    RobotUnicycleVirtuel fauxRobot(0.5);
+    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
+    //RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
@@ -41,28 +44,28 @@ int main()
     point2.x=2000;
     point2.y=0;
     carte.AjouterObjet(&point2, &spriteCroix);
-    fauxRobot.AllerALaPosition(point2.x,point2.y, 50, MARCHE_AVANT);
+    fauxRobot.AllerALaPosition(point2.x,point2.y, 50, MARCHE_AVANT  | RALENTIR_A_L_ARRIVEE);
     while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
     Objet point3;
     point3.x=2000;
     point3.y=-1000;
     carte.AjouterObjet(&point3, &spriteCroix);
-    fauxRobot.AllerALaPosition(point3.x,point3.y, 50, MARCHE_AVANT);
+    fauxRobot.AllerALaPosition(point3.x,point3.y, 50, MARCHE_AVANT  | RALENTIR_A_L_ARRIVEE);
     while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
     Objet point4;
     point4.x=300;
     point4.y=-1500;
     carte.AjouterObjet(&point4, &spriteCroix);
-    fauxRobot.AllerALaPosition(point4.x,point4.y, 50, MARCHE_AVANT);
+    fauxRobot.AllerALaPosition(point4.x,point4.y, 50, MARCHE_AVANT | MARCHE_ARRIERE | RALENTIR_A_L_ARRIVEE);
     while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
     Objet point5;
     point5.x=800;
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
-    fauxRobot.AllerALaPosition(point5.x,point5.y, 5, MARCHE_AVANT | RALENTIR_A_L_ARRIVEE, 30);
+    fauxRobot.AllerALaPosition(point5.x,point5.y, 5, MARCHE_AVANT | MARCHE_ARRIERE |  RALENTIR_A_L_ARRIVEE, 40);
     while(fauxRobot.getConsigne() != STOP)
         sf::Sleep(0.1);
 
@@ -80,7 +83,5 @@ int main()
     char a;
     cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;
-
-
     return 0;
 }

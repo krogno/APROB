@@ -35,6 +35,7 @@
 		<Unit filename="src/Constantes.h" />
 		<Unit filename="src/Deplacement/RobotUnicycle.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycle.h" />
+		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />

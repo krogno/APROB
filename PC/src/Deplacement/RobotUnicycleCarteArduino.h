@@ -11,11 +11,14 @@ la carte moteur créée par Samuel Quiret en 2011
 class RobotUnicycleCarteArduino : public RobotUnicycle
 {
 public:
-    RobotUnicycleVirtuel(const char* port_serie);
+    RobotUnicycleCarteArduino();
 protected:
     void SetVitesses(double vitesse_avance, double omega);
     void GetDeplacement(double& delta_avance, double& delta_theta);
     void SetMoteursEnModeRouesLibres();
+
+    //Port serie
+    serialib serial;
 };
 
 #endif

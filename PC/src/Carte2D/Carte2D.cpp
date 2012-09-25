@@ -5,7 +5,7 @@
 Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY)
 {
     //Fixation d'une valeur par défaut de la période de rafraichissement si la mise à jour automatique est active
-    periodeRafraichissement=0.1;
+    periodeRafraichissement=0.05;
 
     //Chargement  du fond de carte
     imageFond.LoadFromFile(nomFichierFond);

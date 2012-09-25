@@ -51,6 +51,7 @@ protected:
         double erreurLineairePrecedente;
         double erreurAngulaire;
         double erreurAngulairePrecedente;
+        double primitiveErreurAngulaire;
         //A un sens seulement si la consigne est POSITION
         double x_objectif;
         double y_objectif;
@@ -69,8 +70,8 @@ protected:
         bool isThreadRunning;
 
 //Correcteurs
-        inline double CorrectionAngulaire(double erreur, double derivee_erreur);
-        inline double CorrectionLineaire(double erreur, double derivee_erreur);
+        inline double CorrectionAngulaire(double delta_t);
+        inline double CorrectionLineaire(double delta_t);
 
 //Méthodes à surcharger
 protected:
