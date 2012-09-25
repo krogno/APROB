@@ -104,5 +104,5 @@ void RobotUnicycleCarteArduino::GetDeplacement(double& delta_avance, double& del
 
 void RobotUnicycleCarteArduino::SetMoteursEnModeRouesLibres()
 {
-    serial.WriteString("v 0 0\n");
+    SetVitesses(0,0);
 }
