@@ -112,19 +112,6 @@ void RobotUnicycle::Run()
             case ROUE_LIBRE:
                 SetMoteursEnModeRouesLibres();
                 break;
-            case AVANCER:
-            {
-                erreurLineaire+=delta_avance;
-                double correctionLineaire=CorrectionLineaire(delta_t);
-                SetVitesses(-correctionLineaire, 0);
-                if(std::abs(erreurLineaire) <= ROBOT_UNICYCLE_PRECISION_ANGLE && isArrete())
-                {
-                    consigne=STOP;
-                    SetVitesses(0,0);
-                }
-                erreurLineairePrecedente=erreurLineaire;
-                break;
-            }
             case TOURNER:
             {
                 erreurAngulaire+=delta_theta;

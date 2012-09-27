@@ -9,7 +9,7 @@
 ///Consigne que peut suivre le robot
 enum Consigne
 {
-  AVANCER, TOURNER, POSITION, STOP, ROUE_LIBRE
+  TOURNER, POSITION, STOP, ROUE_LIBRE
 };
 
 ///Différents modes que peut avoir à respecter le robot
