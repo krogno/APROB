@@ -41,9 +41,9 @@ PARAMETRES CINÉMATIQUES ET DYNAMIQUE
 ///Vitesse maximum de translation (en unité de longueur par seconde)
 #define ROBOT_UNICYCLE_VITESSE_MAX       100.0
 ///Vitesse maximum de rotation (en rad/s)
-#define ROBOT_UNICYCLE_OMEGA_MAX                    2*M_PI*0.5
+#define ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX                    2*M_PI*0.5
 
-#define ROBOT_UNICYCLE_ACCELERATION_MAX             10.0
+#define ROBOT_UNICYCLE_ACCELERATION_MAX             50.0
 
 /*
 PARAMÈTRES DE PRÉCISION
@@ -78,9 +78,8 @@ PARAMÈTRES D'ASSERVISSEMENT
 #define ROBOT_UNICYCLE_KD_TRANSLATION               0.0
 
 
-#define ROBOT_UNICYCLE_KP_VITESSE                  0.5 //0.2*2.0
-#define ROBOT_UNICYCLE_KI_VITESSE                  2.0 //2*0.2*2.0/0.1
-#define ROBOT_UNICYCLE_KD_VITESSE                  0.0 //0.2*2.0/3
+#define ROBOT_UNICYCLE_KP_VITESSE                  0.5
+#define ROBOT_UNICYCLE_KI_VITESSE                  2.0
 #define ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE  255.0/ROBOT_UNICYCLE_KI_VITESSE
 
 #endif

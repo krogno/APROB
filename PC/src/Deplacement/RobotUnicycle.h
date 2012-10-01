@@ -47,6 +47,12 @@ public:
     bool isArrete();
 
 protected:
+        std::list<CibleTrajectoire*> cibles;
+
+        bool pause;
+
+        double vitesse;
+
         double consigneVitesse;
         double consigneVitessePrecedente;
 
@@ -54,19 +60,11 @@ protected:
         double erreurVitessePrecedente;
         double primitiveErreurVitesse;
 
-        double erreurLineaire;
-        double erreurLineairePrecedente;
-
         double erreurAngulaire;
         double erreurAngulairePrecedente;
         double primitiveErreurAngulaire;
+
         void ReinitialiserErreurs();
-
-        std::list<CibleTrajectoire*> cibles;
-
-        bool pause;
-
-
 
 //thread
         ///Fonction appelée par la méthode Launch() héritée permettant de lancer l'asservissement du déplacement du robot
@@ -78,7 +76,6 @@ protected:
 
 //Correcteurs
         inline double CorrectionAngulaire(double delta_t);
-        inline double CorrectionLineaire(double delta_t);
         inline double CorrectionVitesse(double delta_t);
 
 //Méthodes à surcharger

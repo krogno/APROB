@@ -48,7 +48,7 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    RobotUnicycleVirtuel fauxRobot(1.0,1.0,1.0);
+    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
     //RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
@@ -59,32 +59,31 @@ int main()
     carte.AjouterObjet(&point2, &spriteCroix);
 
 
-    fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y));
+    fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y, MARCHE_AVANT,50.0));
 
     fauxRobot.AjouterCibleOrientation(CibleOrientation(-M_PI));
     Objet point3;
     point3.x=2000;
     point3.y=-1000;
     carte.AjouterObjet(&point3, &spriteCroix);
-    fauxRobot.AjouterCiblePosition(CiblePosition(point3.x,point3.y, MARCHE_AVANT));
+    fauxRobot.AjouterCiblePosition(CiblePosition(point3.x,point3.y, MARCHE_AVANT,50));
     Objet point4;
     point4.x=300;
     point4.y=-1500;
     carte.AjouterObjet(&point4, &spriteCroix);
-    fauxRobot.AjouterCiblePosition(CiblePosition(point4.x,point4.y, MARCHE_AVANT));
+    fauxRobot.AjouterCiblePosition(CiblePosition(point4.x,point4.y, MARCHE_AVANT,50));
     Objet point5;
     point5.x=800;
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
-    fauxRobot.AjouterCiblePosition(CiblePosition(point5.x,point5.y, MARCHE_ARRIERE));
+    fauxRobot.AjouterCiblePosition(CiblePosition(point5.x,point5.y, MARCHE_ARRIERE,0));
 
-    /*fauxRobot.AjouterCibleOrientation(CibleOrientation(M_PI/2));
-
-    fauxRobot.Avancer(1000);
-
-    fauxRobot.Tourner(M_PI);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);*/
+    sf::Sleep(3);
+    fauxRobot.Pause();
+    sf::Sleep(2);
+    fauxRobot.Reprendre();
+    sf::Sleep(10);
+    fauxRobot.Stop();
 
 
     char a;

@@ -17,20 +17,6 @@ RobotUnicycle::~RobotUnicycle()
     Wait();
 }
 
-/*void RobotUnicycle::Avancer(double distance)
-{
-    CiblePosition cible(x+distance*cos(theta),y+distance*sin(theta));
-    AjouterCiblePosition(cible);
-}
-
-void RobotUnicycle::Tourner(double angle)
-{
-    sf::Lock lock(mutexMotificationConsignes);
-    consigne=TOURNER;
-    erreurAngulaire=-angle;
-    erreurAngulairePrecedente=erreurAngulaire;
-    primitiveErreurAngulaire=0;
-}*/
 
 void RobotUnicycle::AjouterCiblePosition(CiblePosition cible)
 {
@@ -130,125 +116,24 @@ void RobotUnicycle::Run()
 
                     distanceRestanteCarre=delta_x*delta_x+delta_y*delta_y;
 
-                    //Erreur lineaire : projection sur l'axe du robot de la distance restante a parcourir
-                    erreurLineaire=-(cos(theta)*delta_x+sin(theta)*delta_y);
-
-                    erreurAngulaire=BornerA_MoinsPi_Pi(theta-atan2(delta_y, delta_x));
-                    double cosinusErreurAngulaire=cos(erreurAngulaire);
-
-
-                    if(((cosinusErreurAngulaire >=0) && (cible->isMarcheAvantAutorisee() || (distanceRestanteCarre < ROBOT_UNICYCLE_DISTANCE_AJUSTEMENT))) || !cible->isMarcheArriereAutorisee() )
-                    {
-                        //Si l'objectif est devant et que (la marche avant est autorisee ou si on est suffisamment pres pour considerer qu'on aie le droit d'ajuster la position en marche avant)
-                        //ou sinon si la marche arriere n'est pas autorisee (et du coup soit la cible est derriere ou on est trop loin pour considerer que ce serait qu'un ajustement)
-
-                        //On y va en marche avant
-                        //Note: on suppose que si la marche arriere n'est pas autorisee, la marche avant l'est
-
-                        //Mise a jour de la consigne de vitesse
-                        double consigneVitesse;
-                        //Dans le cas general on accelere
-                        consigneVitesse=consigneVitessePrecedente+ROBOT_UNICYCLE_ACCELERATION_MAX*delta_t;
-                        //saturation
-                        if(consigneVitesse> ROBOT_UNICYCLE_VITESSE_MAX)
-                            consigneVitesse=ROBOT_UNICYCLE_VITESSE_MAX;
-                        //Sauf si on est suffisamment pres de la cible auquel cas il y a une rampe de vitesse de la vitesse max jusqu a la vitesse de passage
-                        if(distanceRestanteCarre < ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT*ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT)
-                        {
-                            double consigneVitesseFreinage=cible->getVitessePassage()+(ROBOT_UNICYCLE_VITESSE_MAX-cible->getVitessePassage())*distanceRestanteCarre/(ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT*ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT);
-                            //On prend la valeur la plus petite
-                            if(consigneVitesseFreinage < consigneVitesse)
-                                consigneVitesse=consigneVitesseFreinage;
-                        }
-                        //Signe et attenuation:
-                        //Enfin, on multiplie cette consigne par le cosinus de l'erreur angulaire:
-                        //ainsi si l erreur angulaire est de pi/2, on avance pas, mais on corrige l angle
-                        consigneVitesse*=cosinusErreurAngulaire;
-
-
-
-                        //Calcul de l erreur de vitesse
-                        erreurVitesse=consigneVitesse-vitesse;
-
-
-                        //Mise a jour de la variable de consigne de vitesse precedente
-                        consigneVitessePrecedente=consigneVitesse;
-
-
-                        double correctionAngulaire=CorrectionAngulaire(delta_t);
-                        /*double correctionLineaire=(cible->getVitessePassage()==0)?
-                                                  CorrectionLineaire(delta_t)
-                                                  : -ROBOT_UNICYCLE_VITESSE_MAX;*/
-
-                        double correctionVitesse=CorrectionVitesse(delta_t);
-
-                        std::cout<<"CONSIGNE "<<consigneVitesse<<std::endl<<"\tVITESSE "<<vitesse<<"\tERREUR "<<erreurVitesse<<"\tCORRECTION "<<correctionVitesse<<std::endl;
-
-
-                        SetVitesses(correctionVitesse, -correctionAngulaire);
-
-                        consigneVitessePrecedente=consigneVitesse;
-                    }
-                    else
-                    {
-                        //Sinon on y va en marche arrière
-                        //redefinition de l erreur angulaire
-                        erreurAngulaire=BornerA_MoinsPi_Pi(erreurAngulaire-M_PI);
-                        cosinusErreurAngulaire=-cosinusErreurAngulaire;
-
-                        //Mise a jour de la consigne de vitesse
-                        double consigneVitesse;
-                        //Dans le cas general on accelere vers l arriere
-                        consigneVitesse=consigneVitessePrecedente-ROBOT_UNICYCLE_ACCELERATION_MAX*delta_t;
-                        //saturation
-                        if(consigneVitesse< -ROBOT_UNICYCLE_VITESSE_MAX)
-                            consigneVitesse=-ROBOT_UNICYCLE_VITESSE_MAX;
-                        //Sauf si on est suffisamment pres de la cible auquel cas on adapte sa vitesse progressivement jusqu a la vitesse de passage
-                        if(distanceRestanteCarre < ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT*ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT)
-                        {
-                            double consigneVitesseFreinage=-cible->getVitessePassage()+(-ROBOT_UNICYCLE_VITESSE_MAX+cible->getVitessePassage())*distanceRestanteCarre/(ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT*ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT);
-                            //On prend la valeur la plus grande
-                            if(consigneVitesseFreinage > consigneVitesse)
-                                consigneVitesse=consigneVitesseFreinage;
-                        }
-                        //Signe et attenuation:
-                        //Enfin, on multiplie cette consigne par le cosinus de l'erreur angulaire:
-                        //ainsi si l erreur angulaire est de pi/2, on avance pas, mais on corrige l angle
-                        consigneVitesse*=cosinusErreurAngulaire;
-
-                        //Calcul de l erreur de vitesse
-                        erreurVitesse=consigneVitesse-vitesse;
-
-
-                        //Mise a jour de la variable de consigne de vitesse precedente
-                        consigneVitessePrecedente=consigneVitesse;
-
-
-                        double correctionAngulaire=CorrectionAngulaire(delta_t);
-                        /*double correctionLineaire=(cible->getVitessePassage()==0)?
-                                                  CorrectionLineaire(delta_t)
-                                                  : ROBOT_UNICYCLE_VITESSE_MAX;*/
-                        double correctionVitesse=CorrectionVitesse(delta_t);
-
-                        std::cout<<"CONSIGNE "<<consigneVitesse<<std::endl<<"\tVITESSE "<<vitesse<<"\tERREUR "<<erreurVitesse<<"\tCORRECTION "<<correctionVitesse<<std::endl;
-
-                        SetVitesses(correctionVitesse, -correctionAngulaire);
-                    }
-                    erreurLineairePrecedente=erreurLineaire;
-
                     /*Test de si la cible courante est atteinte. Les criteres sont :
                     - la distance a la cible est inferieure a la precision souhaitee
                     - le robot est arrete si la vitesse de passage souhaitee etait 0
                     */
                     if(distanceRestanteCarre <= cible->getPrecisionCarre())
                     {
+                        //On est dans la zone cible : envoi de consignes nulles aux moteurs
+                        SetVitesses(0, 0);
+
                         //S'il y a encore une cible sur la liste apres, on supprime la cible courante et on passe a la suivante
                         if(cibles.size() > 1)
                         {
                             //Suppression de la cible courante
                             delete cible;
-                             cibles.pop_front();
-                             ReinitialiserErreurs();
+                            cibles.pop_front();
+                            ReinitialiserErreurs();
+
+
                         }
                         else
                         {
@@ -256,10 +141,92 @@ void RobotUnicycle::Run()
                             alteration de la cible : on doit l'atteindre avec une vitesse nulle (i.e. s arreter)*/
                             cible->setVitessePassage(0);
                         }
+
                     }
+                    else
+                    {
+                        //Si on n'est pas dans la cible : asservissement des moteurs
+
+                        //Erreur lineaire : projection sur l'axe du robot de la distance restante a parcourir
+                        double erreurLineaire=(cos(theta)*delta_x+sin(theta)*delta_y);
+
+                        erreurAngulaire=BornerA_MoinsPi_Pi(theta-atan2(delta_y, delta_x));
+                        double cosinusErreurAngulaire=cos(erreurAngulaire);
+
+                        if(((erreurLineaire >=0) && (cible->isMarcheAvantAutorisee() || (distanceRestanteCarre < ROBOT_UNICYCLE_DISTANCE_AJUSTEMENT))) || !cible->isMarcheArriereAutorisee() )
+                        {
+                            //Si l'objectif est devant et que (la marche avant est autorisee ou si on est suffisamment pres pour considerer qu'on aie le droit d'ajuster la position en marche avant)
+                            //ou sinon si la marche arriere n'est pas autorisee (et du coup soit la cible est derriere ou on est trop loin pour considerer que ce serait qu'un ajustement)
+                            //On y va en marche avant
+                            //Note: on suppose que si la marche arriere n'est pas autorisee, la marche avant l'est
+
+                            //Mise a jour de la consigne de vitesse
+                            double consigneVitesse;
+                            //Dans le cas general on accelere
+                            consigneVitesse=consigneVitessePrecedente+ROBOT_UNICYCLE_ACCELERATION_MAX*delta_t;
+                            //saturation
+                            if(consigneVitesse> ROBOT_UNICYCLE_VITESSE_MAX)
+                                consigneVitesse=ROBOT_UNICYCLE_VITESSE_MAX;
+                            //Sauf si on est suffisamment pres de la cible auquel cas il y a une rampe de vitesse de la vitesse max jusqu a la vitesse de passage
+                            if(erreurLineaire < ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT)
+                            {
+                                double consigneVitesseFreinage=cible->getVitessePassage()+(ROBOT_UNICYCLE_VITESSE_MAX-cible->getVitessePassage())*erreurLineaire/ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT;
+                                //On prend la valeur la plus petite
+                                if(consigneVitesseFreinage < consigneVitesse)
+                                    consigneVitesse=consigneVitesseFreinage;
+                            }
+
+                            //Calcul de l erreur de vitesse
+                            erreurVitesse=consigneVitesse-vitesse;
+
+
+                            //Mise a jour de la variable de consigne de vitesse precedente
+                            consigneVitessePrecedente=consigneVitesse;
+                        }
+                        else
+                        {
+                            //Sinon on y va en marche arrière
+                            //redefinition de l erreur angulaire
+                            erreurAngulaire=BornerA_MoinsPi_Pi(erreurAngulaire-M_PI);
+                            cosinusErreurAngulaire=-cosinusErreurAngulaire;
+
+                            //Mise a jour de la consigne de vitesse
+                            double consigneVitesse;
+                            //Dans le cas general on accelere vers l arriere
+                            consigneVitesse=consigneVitessePrecedente-ROBOT_UNICYCLE_ACCELERATION_MAX*delta_t;
+                            //saturation
+                            if(consigneVitesse< -ROBOT_UNICYCLE_VITESSE_MAX)
+                                consigneVitesse=-ROBOT_UNICYCLE_VITESSE_MAX;
+                            //Sauf si on est suffisamment pres de la cible auquel cas on adapte sa vitesse progressivement jusqu a la vitesse de passage
+                            if(erreurLineaire < ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT)
+                            {
+                                double consigneVitesseFreinage=-cible->getVitessePassage()-(-ROBOT_UNICYCLE_VITESSE_MAX+cible->getVitessePassage())*erreurLineaire/ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT;
+                                //On prend la valeur la plus grande
+                                if(consigneVitesseFreinage > consigneVitesse)
+                                    consigneVitesse=consigneVitesseFreinage;
+                            }
+
+                            //Calcul de l erreur de vitesse
+                            erreurVitesse=consigneVitesse-vitesse;
+
+
+                            //Mise a jour de la variable de consigne de vitesse precedente
+                            consigneVitessePrecedente=consigneVitesse;
+                        }
+
+
+                        double correctionAngulaire=CorrectionAngulaire(delta_t);
+                        double correctionVitesse=CorrectionVitesse(delta_t);
+
+                        //std::cout<<"CONSIGNE "<<consigneVitesse<<std::endl<<"\tVITESSE "<<vitesse<<"\tERREUR "<<erreurVitesse<<"\tCORRECTION "<<correctionVitesse<<std::endl;
+
+                        SetVitesses(correctionVitesse, -correctionAngulaire);
+                    }
+
                 }
                 break;
-                default: break;
+                default:
+                    break;
                 }
             }
             else
@@ -287,35 +254,28 @@ double RobotUnicycle::CorrectionAngulaire(double delta_t)
         primitiveErreurAngulaire=-ROBOT_UNICYCLE_SEUIL_SATURATION_I_ROTATION;
 
     double PID=ROBOT_UNICYCLE_KP_ROTATION*erreurAngulaire
-                +ROBOT_UNICYCLE_KI_ROTATION*primitiveErreurAngulaire
-                +ROBOT_UNICYCLE_KD_ROTATION*(erreurAngulaire-erreurAngulairePrecedente)/delta_t;
+               +ROBOT_UNICYCLE_KI_ROTATION*primitiveErreurAngulaire
+               +ROBOT_UNICYCLE_KD_ROTATION*(erreurAngulaire-erreurAngulairePrecedente)/delta_t;
 
     erreurAngulairePrecedente=erreurAngulaire;
 
 //std::cout<<"erreur "<<erreur<<std::cout<<"\t ang "<<erreurAngulaire<<"\t primitive "<<primitiveErreurAngulaire<<std::endl;
-    if(PID < -ROBOT_UNICYCLE_OMEGA_MAX)
-        return -ROBOT_UNICYCLE_OMEGA_MAX;
-    else if (PID> ROBOT_UNICYCLE_OMEGA_MAX)
-        return ROBOT_UNICYCLE_OMEGA_MAX;
+    if(PID < -ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX)
+        return -ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX;
+    else if (PID> ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX)
+        return ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX;
     else return PID;
 
 
 }
 
-double RobotUnicycle::CorrectionLineaire(double delta_t)
-{
-    double PD=ROBOT_UNICYCLE_KP_TRANSLATION*erreurLineaire+ROBOT_UNICYCLE_KD_TRANSLATION*(erreurLineaire-erreurLineairePrecedente)/delta_t;
-
-    erreurLineairePrecedente=erreurLineaire;
-    if(PD < -ROBOT_UNICYCLE_VITESSE_MAX)
-        return -ROBOT_UNICYCLE_VITESSE_MAX;
-    else if (PD> ROBOT_UNICYCLE_VITESSE_MAX)
-        return ROBOT_UNICYCLE_VITESSE_MAX;
-    else return PD;
-}
-
 double RobotUnicycle::CorrectionVitesse(double delta_t)
 {
+    /*L estimation de la derivee de l erreur de vitesse est trop sensible aux differents bruits de mesure et de calcul:
+    Il suffit que pour un intervalle de temps de nombreux crans aient ete decomptes et que pour celui suivant ca ne soit pas le cas pour generer des valeurs anormalement elevee de derivee de l' erreur
+    Aussi ici un PI est utilise et pas un PID
+    */
+
     primitiveErreurVitesse+=erreurVitesse*delta_t;
 
     if(primitiveErreurVitesse > ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE)
@@ -324,13 +284,12 @@ double RobotUnicycle::CorrectionVitesse(double delta_t)
         primitiveErreurVitesse=-ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE;
 
 
-    double PID=ROBOT_UNICYCLE_KP_VITESSE*erreurVitesse
-        +ROBOT_UNICYCLE_KI_VITESSE*primitiveErreurVitesse
-        +ROBOT_UNICYCLE_KD_VITESSE*(erreurVitesse-erreurVitessePrecedente)/delta_t;
+    double PI=ROBOT_UNICYCLE_KP_VITESSE*erreurVitesse
+              +ROBOT_UNICYCLE_KI_VITESSE*primitiveErreurVitesse;
 
     erreurVitessePrecedente=erreurVitesse;
 
-    return PID;
+    return PI;
 }
 
 void RobotUnicycle::ReinitialiserErreurs()
@@ -338,9 +297,6 @@ void RobotUnicycle::ReinitialiserErreurs()
     erreurAngulaire=0;
     erreurAngulairePrecedente=0;
     primitiveErreurAngulaire=0;
-
-    erreurLineaire=0;
-    erreurLineairePrecedente=0;
 
     erreurVitesse=0;
     erreurVitessePrecedente=0;
