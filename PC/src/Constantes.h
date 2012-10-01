@@ -36,24 +36,33 @@ PARAMETRES GÉOMETRIQUES
 #define ROBOT_UNICYCLE_NOMBRE_CRANS_PAR_TOUR        512
 
 /*
-PARAMETRES CINÉMATIQUES
+PARAMETRES CINÉMATIQUES ET DYNAMIQUE
 */
 ///Vitesse maximum de translation (en unité de longueur par seconde)
-#define ROBOT_UNICYCLE_VITESSE_MAX       500.0
+#define ROBOT_UNICYCLE_VITESSE_MAX       100.0
 ///Vitesse maximum de rotation (en rad/s)
 #define ROBOT_UNICYCLE_OMEGA_MAX                    2*M_PI*0.5
+
+#define ROBOT_UNICYCLE_ACCELERATION_MAX             10.0
 
 /*
 PARAMÈTRES DE PRÉCISION
 */
 ///précision utilisée pour arrêter un ordre en distance.
-#define ROBOT_UNICYCLE_PRECISION_DISTANCE           10.0
+#define ROBOT_UNICYCLE_PRECISION_DISTANCE           30.0
 ///précision utilisée pour arrêter un ordre en rotation.
 #define ROBOT_UNICYCLE_PRECISION_ANGLE              M_PI/180.0*2.0
 ///Vitesse maximale auquelle peut avancer le robot pour être considérer comme arrêté (en unité de longueur/s)
 #define ROBOT_UNICYCLE_EPSILON_VITESSE              5.0
 ///Vitesse maximale auquelle peut tourner le robot pour être considérer comme arrêté (en rad/s)
 #define ROBOT_UNICYCLE_EPSILON_OMEGA                M_PI/180*2
+///Distance de la cible a partir de le robot doit diminuer sa consigne de vitesse
+#define ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT      150.0
+/**Distance a la cible a partir de laquelle on n'a plus a respecter le mode de deplacement choisi
+    e.g. si seule la marche avant est autorisee mais qu'on a depasse la cible de moins de ROBOT_UNICYCLE_DISTANCE_AJUSTEMENT, on tolere une marche arriere.
+**/
+#define ROBOT_UNICYCLE_DISTANCE_AJUSTEMENT          40.0
+
 /*
 PARAMÈTRES D'ASSERVISSEMENT
 */
@@ -67,5 +76,11 @@ PARAMÈTRES D'ASSERVISSEMENT
 
 #define ROBOT_UNICYCLE_KP_TRANSLATION               1.0
 #define ROBOT_UNICYCLE_KD_TRANSLATION               0.0
+
+
+#define ROBOT_UNICYCLE_KP_VITESSE                  0.5 //0.2*2.0
+#define ROBOT_UNICYCLE_KI_VITESSE                  2.0 //2*0.2*2.0/0.1
+#define ROBOT_UNICYCLE_KD_VITESSE                  0.0 //0.2*2.0/3
+#define ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE  255.0/ROBOT_UNICYCLE_KI_VITESSE
 
 #endif

@@ -33,6 +33,9 @@
 		<Unit filename="src/Carte2D/Carte2D.cpp" />
 		<Unit filename="src/Carte2D/Carte2D.h" />
 		<Unit filename="src/Constantes.h" />
+		<Unit filename="src/Deplacement/CibleOrientation.h" />
+		<Unit filename="src/Deplacement/CiblePosition.h" />
+		<Unit filename="src/Deplacement/CibleTrajectoire.h" />
 		<Unit filename="src/Deplacement/RobotUnicycle.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycle.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.cpp" />

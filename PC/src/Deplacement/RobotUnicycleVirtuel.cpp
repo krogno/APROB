@@ -34,7 +34,7 @@ void RobotUnicycleVirtuel::SetVitesses(double vitesse_avance, double omega)
     vitesse_droite_consigne=floor(vitesse_avance+part_vitesse_omega);
 
     //Saturation des consignes de vitesse
-    if(vitesse_gauche_consigne>ROBOT_UNICYCLE_VITESSE_MAX)
+    /*if(vitesse_gauche_consigne>ROBOT_UNICYCLE_VITESSE_MAX)
         vitesse_gauche_consigne=ROBOT_UNICYCLE_VITESSE_MAX;
     else if(vitesse_gauche_consigne<-ROBOT_UNICYCLE_VITESSE_MAX)
         vitesse_gauche_consigne=-ROBOT_UNICYCLE_VITESSE_MAX;
@@ -42,7 +42,7 @@ void RobotUnicycleVirtuel::SetVitesses(double vitesse_avance, double omega)
     if(vitesse_droite_consigne>ROBOT_UNICYCLE_VITESSE_MAX)
         vitesse_droite_consigne=ROBOT_UNICYCLE_VITESSE_MAX;
     else if(vitesse_droite_consigne<-ROBOT_UNICYCLE_VITESSE_MAX)
-        vitesse_droite_consigne=-ROBOT_UNICYCLE_VITESSE_MAX;
+        vitesse_droite_consigne=-ROBOT_UNICYCLE_VITESSE_MAX;*/
 }
 
 void RobotUnicycleVirtuel::SetMoteursEnModeRouesLibres()

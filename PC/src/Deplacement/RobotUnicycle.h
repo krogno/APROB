@@ -17,22 +17,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <SFML/System.hpp>
 #include "2D/Mobile.h"
 #include "Constantes.h"
-
-
-///Consigne que peut suivre le robot
-enum Consigne
-{
-  TOURNER, POSITION, STOP, ROUE_LIBRE
-};
-
-///Différents modes que peut avoir à respecter le robot
-/*Note : ce sont des flags qui peuvent être combinés entre eux
-par exemple (MARCHE_AVANT | RALENTIR_A_L_ARRIVEE) signifie que la marche avant est autorisée et qu'il faut ralentir à l'arrivée*/
-#define MARCHE_AVANT                1<<0
-#define MARCHE_ARRIERE              1<<1
-#define RALENTIR_A_L_ARRIVEE        1<<3
-#define MARCHE_AVANT_OU_ARRIERE     MARCHE_AVANT | MARCHE_ARRIERE
-
+#include "CibleTrajectoire.h"
+#include "CiblePosition.h"
+#include "CibleOrientation.h"
+#include <list>
 
 /**
 Un RobotUnicycle est un robot théorique se déplaçant dans le plan avec deux roues parallèles.
@@ -50,27 +38,33 @@ public:
     ~RobotUnicycle();
     void Avancer(double distance);
     void Tourner(double angle);
-    void Orienter(double angle);
-    void AllerALaPosition(double x, double y, double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE,  int mode=(MARCHE_AVANT_OU_ARRIERE | RALENTIR_A_L_ARRIVEE), double my_distanceAjustement=ROBOT_UNICYCLE_PRECISION_DISTANCE);
-    void Stopper();
-    void PasserEnModeRouesLibres();
+    void AjouterCibleOrientation(const CibleOrientation& cible);
+    void AjouterCiblePosition(CiblePosition cible);
+
+    void Stop();
+    void Pause();
+    void Reprendre();
     bool isArrete();
-    Consigne getConsigne();
 
 protected:
-        ///Consigne que le robot est en train d'exécuter
-        Consigne consigne;
+        double consigneVitesse;
+        double consigneVitessePrecedente;
+
+        double erreurVitesse;
+        double erreurVitessePrecedente;
+        double primitiveErreurVitesse;
+
         double erreurLineaire;
         double erreurLineairePrecedente;
+
         double erreurAngulaire;
         double erreurAngulairePrecedente;
         double primitiveErreurAngulaire;
-        //A un sens seulement si la consigne est POSITION
-        double x_objectif;
-        double y_objectif;
-        int mode;
-        double precisionPositionCarre;
-        double distanceAjustementCarre;
+        void ReinitialiserErreurs();
+
+        std::list<CibleTrajectoire*> cibles;
+
+        bool pause;
 
 
 
@@ -85,6 +79,7 @@ protected:
 //Correcteurs
         inline double CorrectionAngulaire(double delta_t);
         inline double CorrectionLineaire(double delta_t);
+        inline double CorrectionVitesse(double delta_t);
 
 //Méthodes à surcharger
 protected:

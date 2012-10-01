@@ -48,7 +48,7 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
+    RobotUnicycleVirtuel fauxRobot(1.0,1.0,1.0);
     //RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
@@ -57,44 +57,40 @@ int main()
     point2.x=2000;
     point2.y=0;
     carte.AjouterObjet(&point2, &spriteCroix);
-    fauxRobot.AllerALaPosition(point2.x,point2.y, 50, MARCHE_AVANT  | RALENTIR_A_L_ARRIVEE);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+
+
+    fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y));
+
+    fauxRobot.AjouterCibleOrientation(CibleOrientation(-M_PI));
     Objet point3;
     point3.x=2000;
     point3.y=-1000;
     carte.AjouterObjet(&point3, &spriteCroix);
-    fauxRobot.AllerALaPosition(point3.x,point3.y, 50, MARCHE_AVANT  | RALENTIR_A_L_ARRIVEE);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+    fauxRobot.AjouterCiblePosition(CiblePosition(point3.x,point3.y, MARCHE_AVANT));
     Objet point4;
     point4.x=300;
     point4.y=-1500;
     carte.AjouterObjet(&point4, &spriteCroix);
-    fauxRobot.AllerALaPosition(point4.x,point4.y, 50, MARCHE_AVANT | MARCHE_ARRIERE | RALENTIR_A_L_ARRIVEE);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+    fauxRobot.AjouterCiblePosition(CiblePosition(point4.x,point4.y, MARCHE_AVANT));
     Objet point5;
     point5.x=800;
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
-    fauxRobot.AllerALaPosition(point5.x,point5.y, 5, MARCHE_AVANT | MARCHE_ARRIERE |  RALENTIR_A_L_ARRIVEE, 40);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+    fauxRobot.AjouterCiblePosition(CiblePosition(point5.x,point5.y, MARCHE_ARRIERE));
 
-    fauxRobot.Orienter(0);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+    /*fauxRobot.AjouterCibleOrientation(CibleOrientation(M_PI/2));
 
     fauxRobot.Avancer(1000);
-    while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
 
     fauxRobot.Tourner(M_PI);
     while(fauxRobot.getConsigne() != STOP)
-        sf::Sleep(0.1);
+        sf::Sleep(0.1);*/
+
+
     char a;
     cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;
+    fauxRobot.Stop();
     return 0;
+
 }
