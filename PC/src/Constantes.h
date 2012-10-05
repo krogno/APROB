@@ -30,9 +30,9 @@ PARAMETRES PORT SERIE ASSERVISSEMENT ROBOT UNICYCLE
 PARAMETRES GÉOMETRIQUES
 */
 ///Rayon des roues codeuses.
-#define ROBOT_UNICYCLE_RAYON_ROUE                   30.0
+#define ROBOT_UNICYCLE_RAYON_ROUE                   36.0/2
 ///Distance entre les roues codeuses
-#define ROBOT_UNICYCLE_DISTANCE_ROUES               100.0
+#define ROBOT_UNICYCLE_DISTANCE_ROUES               290.0
 #define ROBOT_UNICYCLE_NOMBRE_CRANS_PAR_TOUR        512
 
 /*
@@ -41,7 +41,7 @@ PARAMETRES CINÉMATIQUES ET DYNAMIQUE
 ///Vitesse maximum de translation (en unité de longueur par seconde)
 #define ROBOT_UNICYCLE_VITESSE_MAX       100.0
 ///Vitesse maximum de rotation (en rad/s)
-#define ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX                    2*M_PI*0.5
+#define ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX                    2*M_PI*0.2
 
 #define ROBOT_UNICYCLE_ACCELERATION_MAX             50.0
 
@@ -69,16 +69,16 @@ PARAMÈTRES D'ASSERVISSEMENT
 ///Période d'asservissement du côté PC (en s)
 #define ROBOT_UNICYCLE_PERIODE_ASSERVISSEMENT       0.05
 
-#define ROBOT_UNICYCLE_KP_ROTATION                  0.2*50.0
-#define ROBOT_UNICYCLE_KI_ROTATION                  2.0*ROBOT_UNICYCLE_KP_ROTATION/0.1 //(Tu=0.1s)
-#define ROBOT_UNICYCLE_KD_ROTATION                  ROBOT_UNICYCLE_KP_ROTATION*0.1/3
-#define ROBOT_UNICYCLE_SEUIL_SATURATION_I_ROTATION  0.005
+#define ROBOT_UNICYCLE_KP_ROTATION                  0.2*20//0.2*50.0
+#define ROBOT_UNICYCLE_KI_ROTATION                  2*ROBOT_UNICYCLE_KP_ROTATION/0.5//2.0*ROBOT_UNICYCLE_KP_ROTATION/0.1 //(Tu=0.1s)
+#define ROBOT_UNICYCLE_KD_ROTATION                  ROBOT_UNICYCLE_KP_ROTATION*0.1/3//ROBOT_UNICYCLE_KP_ROTATION*0.1/3
+#define ROBOT_UNICYCLE_SEUIL_SATURATION_I_ROTATION  0.00001
 
 #define ROBOT_UNICYCLE_KP_TRANSLATION               1.0
 #define ROBOT_UNICYCLE_KD_TRANSLATION               0.0
 
 
-#define ROBOT_UNICYCLE_KP_VITESSE                  0.5
+#define ROBOT_UNICYCLE_KP_VITESSE                  0.01
 #define ROBOT_UNICYCLE_KI_VITESSE                  2.0
 #define ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE  255.0/ROBOT_UNICYCLE_KI_VITESSE
 
