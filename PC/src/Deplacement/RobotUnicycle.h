@@ -51,18 +51,11 @@ protected:
 
         bool pause;
 
-        double vitesse;
-
-        double consigneVitesse;
-        double consigneVitessePrecedente;
-
         double erreurVitesse;
-        double erreurVitessePrecedente;
         double primitiveErreurVitesse;
 
-        double erreurAngulaire;
-        double erreurAngulairePrecedente;
-        double primitiveErreurAngulaire;
+        double erreurOmega;
+        double primitiveErreurOmega;
 
         void ReinitialiserErreurs();
 
@@ -75,8 +68,11 @@ protected:
         bool isThreadRunning;
 
 //Correcteurs
-        inline double CorrectionAngulaire(double delta_t);
         inline double CorrectionVitesse(double delta_t);
+        inline double CorrectionOmega(double delta_t);
+
+        inline double CalculerConsigneVitesse(const double& erreurLineaire, const double& vitesse_passage,const double& delta_t);
+        inline double CalculerConsigneOmega(const double& erreurAngulaire, const double &delta_t);
 
 //Méthodes à surcharger
 protected:

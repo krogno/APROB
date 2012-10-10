@@ -40,7 +40,7 @@ private:
 public:
     TypeCible getType(){return POSITION;};
 
-    CiblePosition(double x, double y, int mode = MARCHE_AVANT, double vitessePassage=0, double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE)
+    CiblePosition(double x, double y, int mode = MARCHE_AVANT, double vitessePassage=ROBOT_UNICYCLE_VITESSE_MIN, double precision=ROBOT_UNICYCLE_PRECISION_DISTANCE)
     {
         this->x=x;
         this->y=y;

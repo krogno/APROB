@@ -48,8 +48,8 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
-    //RobotUnicycleCarteArduino fauxRobot;
+    //RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
+    RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
@@ -59,7 +59,7 @@ int main()
     carte.AjouterObjet(&point2, &spriteCroix);
 
 
-    fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y, MARCHE_AVANT,50.0));
+    /*fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y, MARCHE_AVANT,50.0));
 
     fauxRobot.AjouterCibleOrientation(CibleOrientation(-M_PI));
     Objet point3;
@@ -77,15 +77,24 @@ int main()
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
     fauxRobot.AjouterCiblePosition(CiblePosition(point5.x,point5.y, MARCHE_ARRIERE,0));
+    fauxRobot.AjouterCibleOrientation(M_PI);*/
+//fauxRobot.AjouterCibleOrientation(M_PI);
+/*sf::Sleep(10);
+fauxRobot.AjouterCibleOrientation(0);
+sf::Sleep(10);*/
 
-    sf::Sleep(3);
-    fauxRobot.Pause();
-    sf::Sleep(2);
-    fauxRobot.Reprendre();
-    sf::Sleep(10);
-    fauxRobot.Stop();
+/*fauxRobot.AjouterCibleOrientation(-M_PI);
+fauxRobot.AjouterCibleOrientation(0);
+fauxRobot.AjouterCibleOrientation(M_PI/2);*/
 
 
+fauxRobot.AjouterCiblePosition(CiblePosition(200, 0, MARCHE_AVANT));
+fauxRobot.AjouterCiblePosition(CiblePosition(200, 200, MARCHE_AVANT));
+fauxRobot.AjouterCiblePosition(CiblePosition(0, 200, MARCHE_AVANT));
+fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT));
+/*fauxRobot.AjouterCiblePosition(CiblePosition(100, 100, MARCHE_AVANT,0.0));
+fauxRobot.AjouterCiblePosition(CiblePosition(0, 100, MARCHE_AVANT,0.0));
+fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT,0.0));*/
     char a;
     cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;

@@ -25,8 +25,6 @@ float Mobile::Deplacer(double delta_avance, double delta_theta)
     theta+=delta_theta;
     float tempsEcoule=horloge.GetElapsedTime();
     horloge.Reset();
-    vitesse=delta_avance/tempsEcoule;
-    omega=delta_theta/tempsEcoule;
 
     return tempsEcoule;
 }

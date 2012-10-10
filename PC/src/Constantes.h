@@ -39,25 +39,32 @@ PARAMETRES GÉOMETRIQUES
 PARAMETRES CINÉMATIQUES ET DYNAMIQUE
 */
 ///Vitesse maximum de translation (en unité de longueur par seconde)
-#define ROBOT_UNICYCLE_VITESSE_MAX       100.0
-///Vitesse maximum de rotation (en rad/s)
-#define ROBOT_UNICYCLE_CONSIGNE_OMEGA_MAX                    2*M_PI*0.2
+#define ROBOT_UNICYCLE_VITESSE_MAX       200.0
+#define ROBOT_UNICYCLE_ACCELERATION_MAX             70.0
+#define ROBOT_UNICYCLE_VITESSE_MIN          10.0
+///Distance de la cible a partir de le robot doit diminuer sa consigne de vitesse
+#define ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT      100.0
 
-#define ROBOT_UNICYCLE_ACCELERATION_MAX             50.0
+///Vitesse maximum de rotation (en rad/s)
+#define ROBOT_UNICYCLE_OMEGA_MAX                    M_PI/180.0*180.0
+#define ROBOT_UNICYCLE_ACCELERATION_ANGULAIRE_MAX             0.5
+#define ROBOT_UNICYCLE_OMEGA_MIN          M_PI/180*10.0
+///Distance de la cible a partir de le robot doit diminuer sa consigne de vitesse
+#define ROBOT_UNICYCLE_ANGLE_RALENTISSEMENT      M_PI/180*10.0
+
+
 
 /*
 PARAMÈTRES DE PRÉCISION
 */
 ///précision utilisée pour arrêter un ordre en distance.
-#define ROBOT_UNICYCLE_PRECISION_DISTANCE           30.0
+#define ROBOT_UNICYCLE_PRECISION_DISTANCE           10.0
 ///précision utilisée pour arrêter un ordre en rotation.
 #define ROBOT_UNICYCLE_PRECISION_ANGLE              M_PI/180.0*2.0
 ///Vitesse maximale auquelle peut avancer le robot pour être considérer comme arrêté (en unité de longueur/s)
 #define ROBOT_UNICYCLE_EPSILON_VITESSE              5.0
 ///Vitesse maximale auquelle peut tourner le robot pour être considérer comme arrêté (en rad/s)
 #define ROBOT_UNICYCLE_EPSILON_OMEGA                M_PI/180*2
-///Distance de la cible a partir de le robot doit diminuer sa consigne de vitesse
-#define ROBOT_UNICYCLE_DISTANCE_RALENTISSEMENT      150.0
 /**Distance a la cible a partir de laquelle on n'a plus a respecter le mode de deplacement choisi
     e.g. si seule la marche avant est autorisee mais qu'on a depasse la cible de moins de ROBOT_UNICYCLE_DISTANCE_AJUSTEMENT, on tolere une marche arriere.
 **/
@@ -78,8 +85,12 @@ PARAMÈTRES D'ASSERVISSEMENT
 #define ROBOT_UNICYCLE_KD_TRANSLATION               0.0
 
 
-#define ROBOT_UNICYCLE_KP_VITESSE                  0.01
-#define ROBOT_UNICYCLE_KI_VITESSE                  2.0
+#define ROBOT_UNICYCLE_KP_VITESSE                  2.0/2.2
+#define ROBOT_UNICYCLE_KI_VITESSE                  1.2*ROBOT_UNICYCLE_KP_VITESSE/0.5
 #define ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE  255.0/ROBOT_UNICYCLE_KI_VITESSE
+
+#define ROBOT_UNICYCLE_KP_OMEGA                  0.8/2.2
+#define ROBOT_UNICYCLE_KI_OMEGA                  1.2*(0.8/2.2)/0.1 //(periode)
+#define ROBOT_UNICYCLE_SEUIL_SATURATION_I_OMEGA  255.0/ROBOT_UNICYCLE_KI_OMEGA
 
 #endif

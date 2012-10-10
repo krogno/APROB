@@ -87,7 +87,7 @@ void RobotUnicycleCarteArduino::GetDeplacement(double& delta_avance, double& del
     static long old_cransDroite=0;
 
     static const double facteur_avance=2.0*M_PI/ROBOT_UNICYCLE_NOMBRE_CRANS_PAR_TOUR*ROBOT_UNICYCLE_RAYON_ROUE/2;
-    static const double facteur_theta=2.0*M_PI/ROBOT_UNICYCLE_NOMBRE_CRANS_PAR_TOUR*ROBOT_UNICYCLE_RAYON_ROUE/ROBOT_UNICYCLE_DISTANCE_ROUES*2;
+    static const double facteur_theta=2.0*M_PI/ROBOT_UNICYCLE_NOMBRE_CRANS_PAR_TOUR*ROBOT_UNICYCLE_RAYON_ROUE/ROBOT_UNICYCLE_DISTANCE_ROUES;
 
 
     serial.WriteString("?\n");
@@ -112,6 +112,8 @@ void RobotUnicycleCarteArduino::GetDeplacement(double& delta_avance, double& del
     else
     {
         std::cout<<"Erreur lors de la recuperation de la valeur des encodeurs"<<std::endl;
+        delta_avance=0;
+        delta_theta=0;
     }
 }
 
