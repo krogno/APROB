@@ -23,7 +23,7 @@ RobotUnicycleCarteArduino::RobotUnicycleCarteArduino()
     if(serial.Open(ROBOT_UNICYCLE_PORT_SERIE, ROBOT_UNICYCLE_PORT_SERIE_FREQUENCE)!=1)
     {
         //Renvoi d'une exception si erreur
-        char buffer[50];
+        char buffer[200];
         sprintf(buffer,"Erreur d'ouverture du port serie : %s a la frequence %i",ROBOT_UNICYCLE_PORT_SERIE,ROBOT_UNICYCLE_PORT_SERIE_FREQUENCE);
      //   throw std::runtime_error(buffer);
     }
