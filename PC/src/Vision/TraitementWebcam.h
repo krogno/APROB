@@ -15,6 +15,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define TRAITEMENT_WEBCAM
 
 #include <SFML/System.hpp>
+#include "aruco/cameraparameters.h"
 
 /**
 Classe gérant la lecture en temps "reel" d un flux video par webcam et pouvant realiser des traitements dessus
@@ -26,8 +27,9 @@ class TraitementWebcam : public sf::Thread
     Instancie une classe TraitementWebcam
     numero : le numero de la webcam
     affichage : l image de la camera doit elle etre affichee?
+    detectionMarker : la detecton des fiducial markers est elle activee?
     **/
-    TraitementWebcam(int numero, bool affichage=true);
+    TraitementWebcam(int numero, const char * fichierParametresIntrinseques, bool affichage=true, bool detectionMarker=true);
 
     ~TraitementWebcam();
 
@@ -39,8 +41,11 @@ class TraitementWebcam : public sf::Thread
     protected:
     int numeroWebcam;
     bool affichageImage;
+    bool  detectionMarker;
     ///True si le traitement doit etre lance
     bool continuer;
+    //Parametres de la camera
+    aruco::CameraParameters theCameraParameters;
 };
 
 #endif
