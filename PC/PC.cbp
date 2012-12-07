@@ -24,9 +24,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="`pkg-config --cflags opencv`" />
 			<Add option="-DSFML_DYNAMIC" />
 			<Add directory="src" />
 		</Compiler>
+		<Linker>
+			<Add option="`pkg-config --libs opencv`" />
+		</Linker>
 		<Unit filename="src/2D/Mobile.cpp" />
 		<Unit filename="src/2D/Mobile.h" />
 		<Unit filename="src/2D/Objet.h" />
@@ -42,8 +46,26 @@
 		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />
+		<Unit filename="src/Vision/TraitementWebcam.cpp" />
+		<Unit filename="src/Vision/TraitementWebcam.h" />
 		<Unit filename="src/angle.cpp" />
 		<Unit filename="src/angle.h" />
+		<Unit filename="src/aruco/aruco.h" />
+		<Unit filename="src/aruco/arucofidmarkers.cpp" />
+		<Unit filename="src/aruco/arucofidmarkers.h" />
+		<Unit filename="src/aruco/board.cpp" />
+		<Unit filename="src/aruco/board.h" />
+		<Unit filename="src/aruco/boarddetector.cpp" />
+		<Unit filename="src/aruco/boarddetector.h" />
+		<Unit filename="src/aruco/cameraparameters.cpp" />
+		<Unit filename="src/aruco/cameraparameters.h" />
+		<Unit filename="src/aruco/cvdrawingutils.cpp" />
+		<Unit filename="src/aruco/cvdrawingutils.h" />
+		<Unit filename="src/aruco/exports.h" />
+		<Unit filename="src/aruco/marker.cpp" />
+		<Unit filename="src/aruco/marker.h" />
+		<Unit filename="src/aruco/markerdetector.cpp" />
+		<Unit filename="src/aruco/markerdetector.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/serialib/serialib.cpp" />
 		<Unit filename="src/serialib/serialib.h" />
