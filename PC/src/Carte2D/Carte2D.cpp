@@ -97,13 +97,12 @@ void Carte2D::Run()
 
 
     //L'interception des evenements est necessaire sous windows pour
-    //que la fenetre ne freeze pas
+    //que la fenetre ne freeze pas, et permet de redimensionner la fenetre
     sf::Event eventUseless;
 
     rafraichissementAutomatique = true;
     while(rafraichissementAutomatique)
     {
-        fenetre.SetActive(true);
         while(fenetre.GetEvent(eventUseless)){};
         MettreAJour();
         sf::Sleep(periodeRafraichissement);
