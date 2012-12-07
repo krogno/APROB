@@ -30,8 +30,9 @@ public:
     nomFichierFond : chemin de l'image contenant le fond de carte
     xOrigine, yOrigine : coordonnées en pixel de l'origine du repère
     echelleX, echelleY : rapport entre la dimension à l'écran (en pixel) et la dimension réelle
+    largeurInitiale : largeur initiale de la fenetre
     */
-    Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY);
+    Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY, int largeurInitiale=400);
     ///Ajouter un objet sur la carte, représenté par le sprite passé en argument
     void AjouterObjet(Objet* objet, sf::Sprite* sprite);
     ///Ajouter un objet de la carte
@@ -64,6 +65,8 @@ private:
     void Run();
     ///Variable testée dans Run afin de pouvoir arrêter le thread
     bool rafraichissementAutomatique;
+    ///Largeur initiale de la fenetre
+    int largeur;
     /**
     Permet d'empêcher de modifier la liste des objets pendant la mise à jour de l'affichage
     (ce n'est pas totalement sécurisé car un objet listé peut être modifié ou détruit pendant l'affichage)

@@ -15,10 +15,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <iostream>
 #include <cmath>
 
-Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY)
+Carte2D::Carte2D(std::string nomFichierFond, double x0rigine, double yOrigine, double echelleX, double echelleY, int largeurInitiale)
 {
     //Fixation d'une valeur par défaut de la période de rafraichissement si la mise à jour automatique est active
     periodeRafraichissement=0.05;
+
+    largeur=largeurInitiale;
 
     //Chargement  du fond de carte
     imageFond.LoadFromFile(nomFichierFond);
@@ -85,7 +87,7 @@ bool Carte2D::SetPeriodeRafraichissement(float p)
 void Carte2D::Run()
 {
     //Création de la fenêtre permettant d'afficher la carte : choix -> même dimensions que l'image
-    fenetre.Create(sf::VideoMode(imageFond.GetWidth(), imageFond.GetHeight()), "carte 2D");
+    fenetre.Create(sf::VideoMode(largeur,(int) (largeur*imageFond.GetHeight()/imageFond.GetWidth())), "carte 2D", sf::Style::Resize);
 
     //On nettoie la fenêtre en la remplissant de noir (inutile mais c'est pour montrer la syntaxe)
     fenetre.Clear();
