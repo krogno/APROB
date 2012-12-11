@@ -12,6 +12,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 #include "MobileAParticules.h"
+#include <iostream>
 
 
 void MobileAParticules::CreerParticules(int nombre, double sigma_avance, double sigma_theta)
@@ -21,7 +22,7 @@ void MobileAParticules::CreerParticules(int nombre, double sigma_avance, double 
 
     //Creation des distributions de bruit
     distribution_avance=new std::tr1::normal_distribution<double>(0,sigma_avance);
-    distribution_theta=new std::tr1::normal_distribution<double>(0,sigma_avance);
+    distribution_theta=new std::tr1::normal_distribution<double>(0,sigma_theta);
 
     //Creation de nombre particules, copies du mobile
     particules.clear();
@@ -33,9 +34,10 @@ void MobileAParticules::CreerParticules(int nombre, double sigma_avance, double 
 
 float MobileAParticules::Deplacer(double delta_avance, double delta_theta)
 {
+    double amplitude=std::max(delta_avance,-delta_avance)+std::max(delta_theta,-delta_theta);
     for(std::vector<std::pair<Mobile, double> >::iterator it=particules.begin(); it!=particules.end(); it++)
     {
-        it->first.Deplacer(delta_avance+(*distribution_avance)(generateur_uniforme), delta_theta+(*distribution_theta)(generateur_uniforme));
+        it->first.Deplacer(delta_avance+amplitude*(*distribution_avance)(generateur_uniforme), delta_theta+amplitude*(*distribution_theta)(generateur_uniforme));
     }
     return Mobile::Deplacer(delta_avance, delta_theta);
 }
