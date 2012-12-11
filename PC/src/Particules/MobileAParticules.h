@@ -11,23 +11,30 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef OBJET_H
-#define OBJET_H
+#ifndef MOBILE_A_PARTICULES
+#define MOBILE_A_PARTICULES
 
-/**
-Un objet est un point présentant une orientation.
-Note :
-le repère utilisé ici est un repère trigonométrique classique avec normale z vers le haut : x de gauche à droite, y de bas en haut et theta de x vers y
-SFML utilise un axe y inversé (y de haut en bas)
-*/
-class Objet
+#include "2D/Mobile.h"
+#include <vector>
+#include <tr1/random>
+
+
+class MobileAParticules : public Mobile
 {
-public:
-    ///Position et rotation de l'objet (en radian)
-    double x, y, theta;
+    public:
+    float Deplacer(double delta_avance, double delta_theta);
+    void CreerParticules(int nombre, double sigma_avance, double sigma_theta);
+    MobileAParticules();
+    ~MobileAParticules();
 
-    Objet(const Objet& obj){x=obj.x; y=obj.y; theta=obj.theta;};
-    Objet(){x=0; y=0; theta=0;};
+    ///Vecteur contenant des couples <particule, ponderation associee>
+    std::vector<std::pair<Mobile,double> > particules;
+
+    ///generateurs aleatoires du bruit de deplacement des particules
+    std::tr1::normal_distribution<double>* distribution_avance;
+    std::tr1::normal_distribution<double>* distribution_theta;
+    std::tr1::ranlux64_base_01 generateur_uniforme;
 };
+
 
 #endif

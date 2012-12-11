@@ -26,7 +26,7 @@ public:
     Déplacer le mobile : l'avancer de delta_avance en le tournant de delta_theta
     (Deplacer à n'utiliser que pour des petits déplacements, puisque cette définition n'est pas rigoureuse)
     */
-    float Deplacer(double delta_avance, double delta_theta);
+    virtual float Deplacer(double delta_avance, double delta_theta);
 };
 
 
