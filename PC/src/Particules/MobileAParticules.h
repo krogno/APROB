@@ -23,6 +23,10 @@ class MobileAParticules : public Mobile
 {
     public:
     float Deplacer(double delta_avance, double delta_theta);
+    /**
+    Creer nombre particules a la position
+    Note: pour un robot avec une distance L entre les roues sigma_theta=2/L sigma_avance
+    **/
     void CreerParticules(int nombre, double sigma_avance, double sigma_theta);
     MobileAParticules();
     ~MobileAParticules();
