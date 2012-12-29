@@ -11,23 +11,27 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef OBJET_H
-#define OBJET_H
+#ifndef ROBOT_A_PARTICULES_H
+#define ROBOT_A_PARTICULES_H
 
-/**
-Un objet est un point présentant une orientation.
-Note :
-le repère utilisé ici est un repère trigonométrique classique avec normale z vers le haut : x de gauche à droite, y de bas en haut et theta de x vers y
-SFML utilise un axe y inversé (y de haut en bas)
-*/
-class Objet
+#include "Deplacement/RobotUnicycle.h"
+#include "Deplacement/RobotUnicycleVirtuel.h"
+#include "Particules/Particules.h"
+
+
+
+class RobotAParticulesVirtuel :  public RobotUnicycleVirtuel
 {
-public:
-    ///Position et rotation de l'objet (en radian)
-    double x, y, theta;
+    public:
+    RobotAParticulesVirtuel(double retard, double facteur_erreur_vitesse_gauche, double facteur_erreur_vitesse_droite);
 
-    Objet(const Objet& obj){x=obj.x; y=obj.y; theta=obj.theta;};
-    Objet(double x=0, double y=0, double theta=0){this->x=x; this->y=y; this->theta=theta;};
+    void Deplacer(double delta_avance, double delta_theta);
+
+    void AfficherParticulesSurCarte(Carte2D * carte, sf::Sprite * spriteParticule);
+    void CreerParticules(int nombre, double x, double y, double theta, double sigma_x, double sigma_y, double sigma_theta);
+    void SetBruitDeplacement(double sigma_avance, double sigma_theta);
+
+    Particules particules;
 };
 
 #endif

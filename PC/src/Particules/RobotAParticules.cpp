@@ -11,47 +11,31 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "MobileAParticules.h"
-#include <iostream>
+#include "RobotAParticules.h"
 
-
-void MobileAParticules::CreerParticules(int nombre, double sigma_avance, double sigma_theta)
+void RobotAParticulesVirtuel::Deplacer(double delta_avance, double delta_theta)
 {
-    //Initialisation du generateur pseudo aleatoire
-    generateur_uniforme.seed(3);
 
-    //Creation des distributions de bruit
-    distribution_avance=new std::tr1::normal_distribution<double>(0,sigma_avance);
-    distribution_theta=new std::tr1::normal_distribution<double>(0,sigma_theta);
-
-    //Creation de nombre particules, copies du mobile
-    particules.clear();
-    double ponderation=1.0/nombre;
-    Mobile *mobile=this;
-    std::pair<Mobile, double> exemplaireParticule(*mobile,ponderation);
-    particules.assign(nombre, exemplaireParticule);
+    particules.Deplacer(delta_avance,delta_theta);
+    RobotUnicycle::Deplacer(delta_avance, delta_theta);
 }
 
-float MobileAParticules::Deplacer(double delta_avance, double delta_theta)
+RobotAParticulesVirtuel::RobotAParticulesVirtuel(double retard, double facteur_erreur_vitesse_gauche, double facteur_erreur_vitesse_droite) :
+    RobotUnicycleVirtuel(retard, facteur_erreur_vitesse_gauche, facteur_erreur_vitesse_droite)
 {
-    double amplitude=std::max(delta_avance,-delta_avance)+std::max(delta_theta,-delta_theta);
-    for(std::vector<std::pair<Mobile, double> >::iterator it=particules.begin(); it!=particules.end(); it++)
-    {
-        it->first.Deplacer(delta_avance+amplitude*(*distribution_avance)(generateur_uniforme), delta_theta+amplitude*(*distribution_theta)(generateur_uniforme));
-    }
-    return Mobile::Deplacer(delta_avance, delta_theta);
 }
 
-MobileAParticules::~MobileAParticules()
+void RobotAParticulesVirtuel::AfficherParticulesSurCarte(Carte2D * carte, sf::Sprite * spriteParticule)
 {
-    if(distribution_avance!=NULL)
-        delete distribution_avance;
-    if(distribution_theta!=NULL)
-        delete distribution_theta;
+    particules.AfficherSurCarte(carte, spriteParticule);
 }
 
-MobileAParticules::MobileAParticules()
+void RobotAParticulesVirtuel::CreerParticules(int nombre, double x, double y, double theta, double sigma_x, double sigma_y, double sigma_theta)
 {
-    distribution_avance=NULL;
-    distribution_theta=NULL;
+    particules.CreerParticules(nombre, x, y, theta, sigma_x, sigma_y, sigma_theta);
+}
+
+void RobotAParticulesVirtuel::SetBruitDeplacement(double sigma_avance, double sigma_theta)
+{
+    particules.SetBruitDeplacement(sigma_avance, sigma_theta);
 }

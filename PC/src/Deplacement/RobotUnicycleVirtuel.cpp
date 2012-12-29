@@ -30,8 +30,8 @@ RobotUnicycleVirtuel::RobotUnicycleVirtuel(double retard_s,double facteur_erreur
 void RobotUnicycleVirtuel::SetVitesses(double vitesse_avance, double omega)
 {
     double part_vitesse_omega=omega*ROBOT_UNICYCLE_DISTANCE_ROUES/2.0;
-    vitesse_gauche_consigne=floor(vitesse_avance-part_vitesse_omega);
-    vitesse_droite_consigne=floor(vitesse_avance+part_vitesse_omega);
+    vitesse_gauche_consigne=floor((vitesse_avance-part_vitesse_omega)*255)/255;
+    vitesse_droite_consigne=floor((vitesse_avance+part_vitesse_omega)*255)/255;
 
     //Saturation des consignes de vitesse
     /*if(vitesse_gauche_consigne>ROBOT_UNICYCLE_VITESSE_MAX)

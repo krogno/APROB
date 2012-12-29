@@ -16,11 +16,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "Carte2D/Carte2D.h"
 #include "Deplacement/RobotUnicycleVirtuel.h"
 #include "Deplacement/RobotUnicycleCarteArduino.h"
+#include "Vision/TraitementWebcam.h"
+#include "Particules/RobotAParticules.h"
 
 using namespace std;
 
 int main()
 {
+    /*TraitementWebcam webcam(0,"parametresWebcam.yml",true);
+    webcam.Launch();*/
+
 
     //Chargement des images et création des sprites pour l'affichage
     sf::Image imageCroix;
@@ -39,17 +44,29 @@ int main()
     spriteBete.SetScale(350.0/imageBete.GetWidth(), 300.0/imageBete.GetHeight());
 
     //Création de la carte
-    Carte2D carte("ressources/terrain2012.png", 93,123,500.0/123, 500.0/123);
+    Carte2D carte("ressources/terrain2012.png", 93,123,500.0/123, 500.0/123, 600);
     carte.Launch();
 
+    RobotAParticulesVirtuel robot(1.0,0.9,1.0);
+    robot.SetCorrecteurVitesse(0.1,0,0,1);
+    robot.Launch();
+    robot.AfficherParticulesSurCarte(&carte, &spriteCroix);
+
+    robot.CreerParticules(50,robot.x,robot.y,robot.theta,10,10,3.14/180*0.1);
+    robot.SetBruitDeplacement(0.05,2/30*0.05);
+
+
+    robot.AjouterCiblePosition(CiblePosition(500,0));
+
+/*
     Objet point;
     point.x=0;
     point.y=0;
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    //RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
-    RobotUnicycleCarteArduino fauxRobot;
+    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
+    //RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
@@ -59,7 +76,7 @@ int main()
     carte.AjouterObjet(&point2, &spriteCroix);
 
 
-    /*fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y, MARCHE_AVANT,50.0));
+    fauxRobot.AjouterCiblePosition(CiblePosition(point2.x, point2.y, MARCHE_AVANT,50.0));
 
     fauxRobot.AjouterCibleOrientation(CibleOrientation(-M_PI));
     Objet point3;
@@ -77,28 +94,21 @@ int main()
     point5.y=-1000;
     carte.AjouterObjet(&point5, &spriteCroix);
     fauxRobot.AjouterCiblePosition(CiblePosition(point5.x,point5.y, MARCHE_ARRIERE,0));
-    fauxRobot.AjouterCibleOrientation(M_PI);*/
+    fauxRobot.AjouterCibleOrientation(M_PI);
 //fauxRobot.AjouterCibleOrientation(M_PI);
-/*sf::Sleep(10);
-fauxRobot.AjouterCibleOrientation(0);
-sf::Sleep(10);*/
 
-/*fauxRobot.AjouterCibleOrientation(-M_PI);
-fauxRobot.AjouterCibleOrientation(0);
-fauxRobot.AjouterCibleOrientation(M_PI/2);*/
 
 
 fauxRobot.AjouterCiblePosition(CiblePosition(200, 0, MARCHE_AVANT));
 fauxRobot.AjouterCiblePosition(CiblePosition(200, 200, MARCHE_AVANT));
 fauxRobot.AjouterCiblePosition(CiblePosition(0, 200, MARCHE_AVANT));
 fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT));
-/*fauxRobot.AjouterCiblePosition(CiblePosition(100, 100, MARCHE_AVANT,0.0));
-fauxRobot.AjouterCiblePosition(CiblePosition(0, 100, MARCHE_AVANT,0.0));
-fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT,0.0));*/
+*/
     char a;
     cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;
-    fauxRobot.Stop();
-    return 0;
+    /*fauxRobot.Stop();
+    return 0;*/
+
 
 }

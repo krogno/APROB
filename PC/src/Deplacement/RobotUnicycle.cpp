@@ -9,6 +9,7 @@ RobotUnicycle::RobotUnicycle()
     isThreadRunning=false;
     pause=false;
     ReinitialiserErreurs();
+    SetCorrecteurVitesse(1,0,0,1);
 }
 
 RobotUnicycle::~RobotUnicycle()
@@ -59,6 +60,7 @@ void RobotUnicycle::Run()
 {
     isThreadRunning=true;
     sf::Clock horloge;
+    sf::Clock horlogeDeplacement;
     while(isThreadRunning)
     {
         float tempsEcoule=horloge.GetElapsedTime();
@@ -69,7 +71,9 @@ void RobotUnicycle::Run()
             //Mise à jour de la position
             double delta_avance, delta_theta;
             GetDeplacement(delta_avance, delta_theta); //Dépendant de l'implémentation du robot
-            double delta_t=Deplacer(delta_avance, delta_theta);
+            Deplacer(delta_avance, delta_theta);
+            double delta_t=horlogeDeplacement.GetElapsedTime();
+            horlogeDeplacement.Reset();
 
             double vitesse=delta_avance/delta_t;
             double omega=delta_theta/delta_t;
@@ -212,7 +216,7 @@ double RobotUnicycle::CorrectionOmega(double delta_t)
     else if(primitiveErreurOmega < -ROBOT_UNICYCLE_SEUIL_SATURATION_I_OMEGA)
         primitiveErreurOmega=-ROBOT_UNICYCLE_SEUIL_SATURATION_I_OMEGA;
 
-std::cout<<"er omega"<<erreurOmega<<"\tprimitive omega "<<primitiveErreurOmega<<std::endl;
+//std::cout<<"er omega"<<erreurOmega<<"\tprimitive omega "<<primitiveErreurOmega<<std::endl;
 
     double PI=ROBOT_UNICYCLE_KP_OMEGA*erreurOmega
               +ROBOT_UNICYCLE_KI_OMEGA*primitiveErreurOmega;
@@ -228,17 +232,17 @@ double RobotUnicycle::CorrectionVitesse(double delta_t)
     */
     primitiveErreurVitesse+=erreurVitesse*delta_t;
 
-    if(primitiveErreurVitesse > ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE)
-        primitiveErreurVitesse=ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE;
-    else if(primitiveErreurVitesse < -ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE)
-        primitiveErreurVitesse=-ROBOT_UNICYCLE_SEUIL_SATURATION_I_VITESSE;
+    if(primitiveErreurVitesse > Ksaturation_vitesse)
+        primitiveErreurVitesse=Ksaturation_vitesse;
+    else if(primitiveErreurVitesse < -Ksaturation_vitesse)
+        primitiveErreurVitesse=-Ksaturation_vitesse;
 
-        std::cout<<"er vit"<<erreurVitesse<<"\tprimitive vit"<<primitiveErreurVitesse<<std::endl;
+//        std::cout<<"er vit"<<erreurVitesse<<"\tprimitive vit"<<primitiveErreurVitesse<<std::endl;
 
 
-    double PI=ROBOT_UNICYCLE_KP_VITESSE*erreurVitesse
-              +ROBOT_UNICYCLE_KI_VITESSE*primitiveErreurVitesse;
-
+    double PI=KP_vitesse*erreurVitesse
+              +KI_vitesse*primitiveErreurVitesse;
+std::cout<<PI<<std::endl;
     return PI;
 }
 
@@ -341,6 +345,14 @@ double RobotUnicycle::CalculerConsigneOmega(const double& erreurAngulaire, const
     consigneOmegaPrecedente=consigneOmega;
 
     return consigneOmega;
+}
+
+void RobotUnicycle::SetCorrecteurVitesse(double P, double I, double D, double saturation)
+{
+    KP_vitesse=P;
+    KI_vitesse=I;
+    KD_vitesse=D;
+    Ksaturation_vitesse=saturation;
 }
 
 void RobotUnicycle::ReinitialiserErreurs()

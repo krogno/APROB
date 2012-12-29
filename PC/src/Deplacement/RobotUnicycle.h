@@ -41,6 +41,8 @@ public:
     void AjouterCibleOrientation(const CibleOrientation& cible);
     void AjouterCiblePosition(CiblePosition cible);
 
+    void SetCorrecteurVitesse(double P, double I, double D, double saturation);
+
     void Stop();
     void Pause();
     void Reprendre();
@@ -70,6 +72,10 @@ protected:
 //Correcteurs
         inline double CorrectionVitesse(double delta_t);
         inline double CorrectionOmega(double delta_t);
+        //Constantes des correcteurs
+        double KP_vitesse, KI_vitesse, KD_vitesse, Ksaturation_vitesse;
+        double KP_omega, KI_omega, KD_omega, Ksaturation_omega;
+
 
         inline double CalculerConsigneVitesse(const double& erreurLineaire, const double& vitesse_passage,const double& delta_t);
         inline double CalculerConsigneOmega(const double& erreurAngulaire, const double &delta_t);

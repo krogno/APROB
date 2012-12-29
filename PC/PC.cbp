@@ -46,8 +46,10 @@
 		<Unit filename="src/Deplacement/RobotUnicycleCarteArduino.h" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.cpp" />
 		<Unit filename="src/Deplacement/RobotUnicycleVirtuel.h" />
-		<Unit filename="src/Particules/MobileAParticules.cpp" />
-		<Unit filename="src/Particules/MobileAParticules.h" />
+		<Unit filename="src/Particules/Particules.cpp" />
+		<Unit filename="src/Particules/Particules.h" />
+		<Unit filename="src/Particules/RobotAParticules.cpp" />
+		<Unit filename="src/Particules/RobotAParticules.h" />
 		<Unit filename="src/Vision/TraitementWebcam.cpp" />
 		<Unit filename="src/Vision/TraitementWebcam.h" />
 		<Unit filename="src/angle.cpp" />

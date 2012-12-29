@@ -16,15 +16,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <cmath>
 #include <SFML/System.hpp>
 
-float Mobile::Deplacer(double delta_avance, double delta_theta)
+void Mobile::Deplacer(double delta_avance, double delta_theta)
 {
-    static sf::Clock horloge;
     double theta_plus_delta_theta_2=theta+delta_theta/2;
     x+=delta_avance*cos(theta_plus_delta_theta_2);
     y+=delta_avance*sin(theta_plus_delta_theta_2);
     theta+=delta_theta;
-    float tempsEcoule=horloge.GetElapsedTime();
-    horloge.Reset();
+}
 
-    return tempsEcoule;
+
+Mobile::Mobile(double x, double y, double theta) :
+Objet(x,y,theta)
+{
 }
