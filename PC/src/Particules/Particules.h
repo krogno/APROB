@@ -35,6 +35,10 @@ class Particules
 
     void AfficherSurCarte(Carte2D* carte, sf::Sprite *sprite);
 
+    /**Fonction rrechantillonnant les particules suivant leur distribution de ponderations
+    Note : génère une erreur s'il n'y a pas de particules**/
+    void Reechantillonner();
+
     ///Couples <particule, ponderation associee>
     Mobile* particules;
     double* ponderations;
@@ -49,6 +53,7 @@ class Particules
     ///generateurs aleatoires du bruit de deplacement des particules
     std::tr1::normal_distribution<double>* distribution_avance;
     std::tr1::normal_distribution<double>* distribution_theta;
+    std::tr1::uniform_real<double>* distribution_uniforme;
     std::tr1::ranlux64_base_01 generateur_uniforme;
 };
 

@@ -14,6 +14,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "Particules.h"
 #include <iostream>
 #include <ctime>
+#include <algorithm>
+#include <vector>
 
 void Particules::CreerParticules(int nombre, double x, double y, double theta, double sigma_x, double sigma_y, double sigma_theta)
 {
@@ -97,8 +99,61 @@ Particules::Particules()
     //Creation des distributions de bruit sans bruit : deplacement ideal
     distribution_avance=new std::tr1::normal_distribution<double>(0,0);
     distribution_theta=new std::tr1::normal_distribution<double>(0,0);
+    distribution_uniforme=new std::tr1::uniform_real<double>(0,1);
     particules=NULL;
     ponderations=NULL;
-    nombre=0;
     carte=NULL;
+    CreerParticules(1,0,0,0,0,0,0);
+}
+
+
+void Particules::Reechantillonner()
+{
+    //Realisation d un vecteur des ponderations cumulees des particules
+    std::vector<double> ponderations_cumulees(nombre);
+    ponderations_cumulees[0]=0;
+    for(int i=0; i<nombre-1; i++)
+    {
+        ponderations_cumulees[i+1]=ponderations_cumulees[i]+ponderations[i];
+    }
+    //Somme des ponderations
+    double normalisateur=ponderations_cumulees[nombre-1]+ponderations[nombre-1];
+
+
+    //Tableau qui contiendra les particules reechantillonnees
+    Mobile *nouvelles_particules=new Mobile[nombre];
+    for(int i=0; i<nombre; i++)
+    {
+        //Selection aleatoire d une particule suivant la distribution de ponderation, avec remise
+        double alea=(*distribution_uniforme)(generateur_uniforme)*normalisateur;
+        //j est l indice de cette particule
+        int j=(int)(lower_bound(ponderations_cumulees.begin(), ponderations_cumulees.end(),alea)-ponderations_cumulees.begin())-1;
+        /*for(int k=0; k<nombre; k++)
+            std::cout<<ponderations_cumulees[k]<<" ";
+        std::cout<<std::endl;
+        std::cout<<"alea "<<alea<<"\t"<<j<<std::endl;*/
+
+        //Copie de cette particule dans le vecteur des nouvelles particules
+        nouvelles_particules[i].x=particules[j].x;
+        nouvelles_particules[i].y=particules[j].y;
+        nouvelles_particules[i].theta=particules[j].theta;
+    }
+
+    //Mis a jour du tableau de particules
+    if(carte)
+    {
+        for(int i=0; i<nombre; i++)
+        {
+            carte->RetirerObjet(&particules[i]);
+        }
+    }
+    delete [] particules;
+    particules=nouvelles_particules;
+    if(carte)
+    {
+        for(int i=0; i<nombre; i++)
+        {
+            carte->AjouterObjet(&particules[i],sprite);
+        }
+    }
 }
