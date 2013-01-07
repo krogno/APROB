@@ -139,21 +139,16 @@ void Particules::Reechantillonner()
         nouvelles_particules[i].theta=particules[j].theta;
     }
 
-    //Mis a jour du tableau de particules
-    if(carte)
+    //Mis a jour du tableau de particules et homogénisation des ponderations
+    for(int i=0; i<nombre; i++)
     {
-        for(int i=0; i<nombre; i++)
+        if(carte)
         {
             carte->RetirerObjet(&particules[i]);
+            carte->AjouterObjet(&nouvelles_particules[i],sprite);
         }
+        ponderations[i]=1;
     }
     delete [] particules;
     particules=nouvelles_particules;
-    if(carte)
-    {
-        for(int i=0; i<nombre; i++)
-        {
-            carte->AjouterObjet(&particules[i],sprite);
-        }
-    }
 }
