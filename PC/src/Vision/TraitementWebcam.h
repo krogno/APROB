@@ -16,6 +16,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #include <SFML/System.hpp>
 #include "aruco/cameraparameters.h"
+#include "2D/Objet.h"
+#include <map>
+
 
 /**
 Classe gérant la lecture en temps "reel" d un flux video par webcam et pouvant realiser des traitements dessus
@@ -29,7 +32,16 @@ class TraitementWebcam : public sf::Thread
     affichage : l image de la camera doit elle etre affichee?
     detectionMarker : la detecton des fiducial markers est elle activee?
     **/
-    TraitementWebcam(int numero, const char * fichierParametresIntrinseques, bool affichage=true, bool detectionMarker=true);
+    TraitementWebcam(int numero, const char * fichierParametresIntrinseques, bool affichage=true);
+
+    ///Position de la webcam dans le repere du robot
+    Objet positionWebcam;
+
+    ///Map des balises (la balise balises[124] correspond a la balise dont le numero est 124)
+    std::map<int, Objet> balises;
+
+    ///Dimension des marqueurs ARUCO utilisés (en metres de meme que la calibration camera. Sinon meme avec les memes unites que celles de la calibration de la camera les resultats seront faux)
+    double dimension_marqueur;
 
     ~TraitementWebcam();
 
@@ -41,9 +53,9 @@ class TraitementWebcam : public sf::Thread
     protected:
     int numeroWebcam;
     bool affichageImage;
-    bool  detectionMarker;
-    ///True si le traitement doit etre lance
+
     bool continuer;
+
     //Parametres de la camera
     aruco::CameraParameters theCameraParameters;
 };
