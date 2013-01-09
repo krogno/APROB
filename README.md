@@ -12,7 +12,18 @@ C++
 projet permettant la compilation sous CodeBlocks.
 
 ### Bibliothèques utilisées :
-SFML 1.6 (sfml-dev.org)
+SFML 1.6 (sfml-dev.org) : Simple and Fast Media Library
+ArUco 1.2.4 : Augmented Reality library from the University of Cordoba (code source intégré au code PC)
+
+Outils
+===========
+### Calibration d'une Webcam
+Code d'exemple distribué avec OpenCV pour calibrer une webcam au moyen d'un damier noir et blanc.
+1. Compiler le projet Codeblocks.
+2. Lancer le programme avec les bonnes options en paramètres. Par exemple, pour mon damier de 9 par 6 intersections (soit 10 colonnes par 7 lignes), avec des cases de 0.025m de côté :
+calibration -w 9 -h 6 -s 0.025 -o camera.yml -op
+3. Je cite la page web du projet ArUco "You should take at least five different pictures. A frontal one, and four where the border of the pattern is near the image border. By placing the pattern near the image border it will be possible to estimate accurately the camera distorsion." (http://www.uco.es/investiga/grupos/ava/node/26 au 09/01/2012)
+
 
 Comment compiler le code et exécuter le programme :
 -----------------
