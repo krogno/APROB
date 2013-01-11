@@ -14,22 +14,29 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
-				<Linker>
-					<Add option="-lsfml-graphics" />
-					<Add option="-lsfml-window" />
-					<Add option="-lsfml-system" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="`pkg-config --cflags opencv`" />
 			<Add option="-DSFML_DYNAMIC" />
 			<Add directory="src" />
 		</Compiler>
 		<Linker>
-			<Add option="`pkg-config --libs opencv`" />
+			<Add option="-lsfml-graphics" />
+			<Add option="-lsfml-window" />
+			<Add option="-lsfml-system" />
+			<Add option="-lopencv_core" />
+			<Add option="-lopencv_imgproc" />
+			<Add option="-lopencv_highgui" />
+			<Add option="-lopencv_ml" />
+			<Add option="-lopencv_video" />
+			<Add option="-lopencv_features2d" />
+			<Add option="-lopencv_calib3d" />
+			<Add option="-lopencv_objdetect" />
+			<Add option="-lopencv_contrib" />
+			<Add option="-lopencv_legacy" />
+			<Add option="-lopencv_flann" />
 		</Linker>
 		<Unit filename="src/2D/Mobile.cpp" />
 		<Unit filename="src/2D/Mobile.h" />
