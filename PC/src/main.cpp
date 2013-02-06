@@ -16,6 +16,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "Carte2D/Carte2D.h"
 #include "Deplacement/RobotUnicycleVirtuel.h"
 #include "Deplacement/RobotUnicycleCarteArduino.h"
+#include "Message.h"
+#include <stdio.h>
+#include <string>
 
 using namespace std;
 
@@ -48,8 +51,8 @@ int main()
     carte.AjouterObjet(&point, &spriteCroix);
 
     //Création d'un faux robot ayant un retard d'asservissement en vitesse typique de 0.5s
-    //RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
-    RobotUnicycleCarteArduino fauxRobot;
+    RobotUnicycleVirtuel fauxRobot(1.0,0.9,1.0);
+    //RobotUnicycleCarteArduino fauxRobot;
     fauxRobot.Launch();
     carte.AjouterObjet(&fauxRobot, &spriteBete);
 
@@ -95,6 +98,26 @@ fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT));
 /*fauxRobot.AjouterCiblePosition(CiblePosition(100, 100, MARCHE_AVANT,0.0));
 fauxRobot.AjouterCiblePosition(CiblePosition(0, 100, MARCHE_AVANT,0.0));
 fauxRobot.AjouterCiblePosition(CiblePosition(0, 0, MARCHE_AVANT,0.0));*/
+
+    Message message("/dev/ttyACM0",9600);
+    message.SendMessage("r\n");
+    int i=0;
+    while(1)
+    {
+        std::string msg=message.GetMessage();
+        while(msg!="")
+        {
+                std::cout<<msg<<endl;
+                msg=message.GetMessage();
+        }
+        char s[50];
+        sprintf(s,"v %i\n",i%180);
+        std::string str=s;
+        /*message.SendMessage(str);
+        sf::Sleep(0.9);
+        i+=10;*/
+    }
+
     char a;
     cout << "Fini! Entrer un caractere pour continuer" << endl;
     cin>>a;
